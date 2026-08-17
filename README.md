@@ -1,6 +1,6 @@
 # Dopamine 2.0 — AI Design Harness
 
-An agent harness for designing mobile interfaces through the [Dopamine 2.0](https://dopamine2-0.dopamine-ds.workers.dev/) design system. Built for Claude, structured on the [Impeccable](https://github.com/pbakaus/impeccable) open-source agent harness pattern.
+An agent harness for designing mobile interfaces through the [Dopamine 2.0](https://dopamine2-0.dopamine-ds.workers.dev/) design system. Built for Claude.
 
 Dopamine 2.0 is the internal design system for [1mg](https://www.1mg.com), a health and pharmacy product. The harness enforces a governed three-stage design workflow where each stage has an entry gate, a defined protocol, and a handoff artifact.
 
@@ -123,4 +123,4 @@ The hard floor — accessibility constraints that are never candidates for depar
 
 ## Structural model
 
-This harness follows the [Impeccable](https://github.com/pbakaus/impeccable) pattern: one skill entry point with a lean router, stage-specific knowledge loaded lazily via reference files, and project state tracked through handoff artifacts (`WIREFRAME.md`, `DESIGN_DECISIONS.md`). The base skill stays small and keyword-rich for auto-triggering; heavy instructions only load on demand.
+The harness is structured as one skill entry point with a lean router, stage-specific knowledge loaded lazily via reference files, and project state tracked through handoff artifacts (`WIREFRAME.md`, `DESIGN_DECISIONS.md`). The base skill stays small and keyword-rich for auto-triggering; heavy instructions only load on demand.
