@@ -47,7 +47,8 @@ You MUST do these steps before proceeding:
    - `ideate` — always valid; this is the starting point.
    - `compose` — requires a completed wireframe artifact from Stage 1
      (a `WIREFRAME.md` or equivalent checked into the project).
-     The Storybook MCP connection must be available.
+     The Storybook MCP connection must be available. Stage 2 loads both
+     `reference/interface-principles.md` and `reference/accessibility.md`.
    - `polish` — requires a composed surface from Stage 2 with all
      components rendering correctly against the token system, and
      all accessibility constraints from `reference/accessibility.md`
@@ -105,6 +106,19 @@ Critical constraints that affect all stages:
 - Cabinet Grotesk only at ≥24pt.
 - Seven states per interactive element: default, hover, focus, pressed,
   loading, disabled, selected.
+
+### Interface principles (the design-conviction layer)
+
+The system's intent layer: three tiers — Principles (what kind of
+experience), Laws (how it's designed), Visual (how it's built) — under one
+overriding bias: **clarity and safety always beat delight.** Full reference
+at `reference/interface-principles.md`, loaded alongside accessibility by
+Stage 2.
+
+Six principles (ranked): Trust through explainability · Calm over alarm ·
+Context aware · Answer first · Progressively disclose · Participation creates
+ownership. Five laws: next action obvious · assume mistakes · consistency over
+creativity · low cognitive load · aesthetics aid usability.
 
 ## Commands
 
