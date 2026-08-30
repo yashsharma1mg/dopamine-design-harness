@@ -1,126 +1,156 @@
-# Dopamine 2.0 — AI Design Harness
+# Dopamine Design Harness
 
-An agent harness for designing mobile interfaces through the [Dopamine 2.0](https://dopamine2-0.dopamine-ds.workers.dev/) design system. Built for Claude.
+A Claude skill for turning vague mobile product intent into a governed design handoff: an approved brief, a structural wireframe, a token-backed composition, and explicitly approved visual departures.
 
-Dopamine 2.0 is the internal design system for [1mg](https://www.1mg.com), a health and pharmacy product. The harness enforces a governed three-stage design workflow where each stage has an entry gate, a defined protocol, and a handoff artifact.
+This repository is the workflow layer in a three-part design-to-interface pipeline:
 
-## The three stages
+- [Dopamine 2.0](https://github.com/yashsharma1mg/dopamine-2.0) provides the canonical tokens, components, Storybook, and MCP server.
+- This harness governs how a Claude agent reasons about and moves through a design task.
+- [DesMania](https://github.com/yashsharma1mg/DesMania) demonstrates the process in a concrete diagnostics checkout prototype.
 
+The harness contains instructions and reference material for Claude. It is not a renderer, a design editor, or an automated end-to-end validator.
+
+## What It Does
+
+The workflow has three sequential stages:
+
+```text
+ideate  --->  compose  --->  polish
+   |             |             |
+   v             v             v
+PRODUCT.md   surface code   DESIGN_DECISIONS.md
+WIREFRAME.md compliance     approved departures
 ```
-ideate ──→ compose ──→ polish
-  │            │           │
-  ▼            ▼           ▼
-WIREFRAME.md   Surface    DESIGN_DECISIONS.md
-(brief +       (real       (approved departures
- wireframes +   components   + hard floor
- candidates)    + tokens)    confirmation)
+
+### Stage 1: Ideate
+
+The agent resolves the surface identity, user context, goal, content, entry and exit flow, priority hierarchy, states, edge cases, and existing patterns. It then produces an approved brief and annotated grayscale wireframes at 360px.
+
+Output: `PRODUCT.md` and `WIREFRAME.md`.
+
+### Stage 2: Compose
+
+The agent maps wireframe zones to real Dopamine 2.0 components, verifies props and variants through Storybook MCP, resolves values through the token hierarchy, and checks the interface principles and accessibility floor.
+
+Output: composed surface code, a zone-to-component map, a compliance record, and any composition gaps.
+
+### Stage 3: Polish
+
+The agent audits the composed surface and proposes 3-7 specific departures grouped by risk. Each departure requires user approval. Accessibility remains a hard floor and cannot be traded away for visual distinction.
+
+Output: `DESIGN_DECISIONS.md`.
+
+Stages are sequential. The skill describes entry gates and handoffs, but those gates are protocol-level Claude instructions rather than a separate executable enforcement system.
+
+## How To Use
+
+Open this repository in Claude Code or another Claude surface that can load project instructions. The root `CLAUDE.md` and `.claude/skills/dopamine/SKILL.md` provide the entry point.
+
+Use these commands in a target product repository:
+
+```text
+/dopamine ideate [surface]
+/dopamine compose [surface]
+/dopamine polish [surface]
 ```
 
-**Stage 1 — Ideate.** The agent interrogates the user across eight dimensions (surface identity, user context, goals, content inventory, entry/exit flow, priority hierarchy, states/edges, existing patterns) until a complete brief can be written. The user approves the brief, then the agent produces annotated structural wireframes at 360px. No visual decisions — no colour, no type treatment, no components. Output: `WIREFRAME.md`.
+Prerequisites:
 
-**Stage 2 — Compose.** The wireframe zones get translated into real Dopamine 2.0 components using the Storybook MCP connection. Every decision resolves through the three-layer token hierarchy (base → semantic → component). The accessibility guidelines are loaded as a mandatory constraint layer — every composed surface must pass before advancing. Output: a rendered surface with correct token resolution.
+1. Start with `ideate`. It is the only stage that does not require an existing handoff artifact.
+2. Keep `PRODUCT.md` and `WIREFRAME.md` at the target project root before composing.
+3. Configure the [Dopamine 2.0 Storybook MCP server](https://github.com/yashsharma1mg/dopamine-2.0/tree/main/packages/mcp) before using `compose` or `polish`.
+4. Use an existing codebase when composing so component, token, and accessibility decisions can be checked against real implementation context.
 
-**Stage 3 — Polish.** The agent audits the composed surface for visual hierarchy, rhythm, brand presence, and signature opportunities, then proposes 3–7 specific departures from the design system grouped by risk level. The user approves each departure individually before it is applied. Accessibility constraints are a hard floor — never candidates for departure. Output: `DESIGN_DECISIONS.md`.
+## Artifact Contract
 
-Stages are sequential. Each has an entry gate checked by the skill. You cannot skip to polish without a composed surface, and you cannot compose without an approved wireframe.
+| Artifact | Created by | Purpose |
+| --- | --- | --- |
+| `PRODUCT.md` | Ideate setup | Product and surface context carried across stages. |
+| `WIREFRAME.md` | Ideate | Approved brief, structural wireframes, states, and component candidates. |
+| `DESIGN_DECISIONS.md` | Polish | Approved and rejected departures plus hard-floor confirmation. |
 
-## Repository structure
+The repository currently contains the protocols, not a checked-in sample run of these artifacts. The most useful verification is to run the skill against a real surface and inspect the resulting handoffs.
 
+## Stage Gates And Outputs
+
+### Ideate
+
+- Entry: always open for a new surface.
+- Gate: the brief must resolve all eight interrogation dimensions and receive user approval.
+- Output: grayscale, annotated wireframes for meaningful states and a component-candidate table.
+
+### Compose
+
+- Entry: an approved `WIREFRAME.md` exists and Storybook MCP is available.
+- Gate: every zone maps to a real component, every value resolves through canonical tokens, and accessibility gaps are either fixed or explicitly surfaced.
+- Output: composed code, compliance record, and composition-gap list.
+
+### Polish
+
+- Entry: the composed surface passes its foundation checks.
+- Gate: every departure is independently approved and the final accessibility sweep passes.
+- Output: `DESIGN_DECISIONS.md` documenting approved and rejected proposals.
+
+## Design-System And Accessibility Principles
+
+The harness is designed around Dopamine 2.0's three-layer token hierarchy:
+
+```text
+base  ->  semantic  ->  component
 ```
+
+It also carries the system's intent layer: trust through explainability, calm over alarm, context awareness, answer first, progressive disclosure, and participation that creates ownership. The overriding bias is that clarity and safety beat delight.
+
+Healthcare surfaces must preserve critical content, readable contrast, persistent form labels, meaningful screen-reader names, adequate touch targets, reduced-motion alternatives, and non-truncated drug names, dosages, allergens, and frequencies. The full constraints live in [`reference/accessibility.md`](.claude/skills/dopamine/reference/accessibility.md).
+
+## Current Status
+
+| Area | Status | Notes |
+| --- | --- | --- |
+| Ideate protocol | Complete | Interrogation, brief, wireframe, and handoff rules are documented. |
+| Compose protocol | Complete | Four-phase map, resolve, check, and gate protocol is documented. |
+| Polish protocol | Complete | Audit, proposal, approval, application, and final sweep are documented. |
+| Accessibility reference | Complete | WCAG, clinical, form, motion, and content constraints are documented. |
+| Interface principles | Complete | Intent and design-conviction layer is documented. |
+| Real-surface end-to-end validation | Pending | No sample run or automated workflow validator is committed here. |
+
+## Limitations And Non-Goals
+
+- This repository does not render UI or provide a visual canvas.
+- The stage gates are instructions for Claude, not a compiler or CI policy engine.
+- Compose and polish depend on an external Storybook MCP connection.
+- The harness targets Dopamine 2.0's 360px mobile contract; it does not define a desktop system.
+- Accessibility references guide design decisions but do not replace product-specific testing with assistive technology.
+
+## Repository Structure
+
+```text
 .
-├── README.md                                          ← you are here
-├── CLAUDE.md                                          ← project-level instructions (auto-read by Claude)
+├── README.md
+├── CLAUDE.md
 └── .claude/
     └── skills/
         └── dopamine/
-            ├── SKILL.md                               ← entry point, router, system knowledge
+            ├── SKILL.md
             └── reference/
-                ├── ideate.md                          ← Stage 1 protocol (complete)
-                ├── compose.md                         ← Stage 2 protocol (placeholder)
-                ├── accessibility.md                   ← WCAG/IS 17802/RPwD constraints (complete)
-                └── polish.md                          ← Stage 3 protocol (complete)
+                ├── ideate.md
+                ├── compose.md
+                ├── interface-principles.md
+                ├── accessibility.md
+                └── polish.md
 ```
 
-## File reference
+`SKILL.md` is the router and compressed system reference. The reference files contain the detailed stage protocols and the two constraint layers loaded during composition.
 
-### `CLAUDE.md`
-Project-level instructions that Claude reads automatically at the start of every session. Points to the skill, summarises the three stages, and lists the project files the workflow produces (`PRODUCT.md`, `WIREFRAME.md`, `DESIGN_DECISIONS.md`).
+## Verification
 
-### `SKILL.md`
-The skill entry point. Contains:
-- **Frontmatter** — name, keyword-rich description for auto-triggering, argument hints, allowed tools.
-- **Setup protocol** — mandatory steps that run before any stage: read project context, load the stage reference file, familiarise with the codebase, check entry gates.
-- **System knowledge** — compressed Dopamine 2.0 reference: three-layer token architecture, key constraints (360px viewport, 4px spacing rhythm, typography roles, radii, brand colour), the full 35-component library, and critical accessibility constraints.
-- **Command router** — maps `ideate`, `compose`, and `polish` to their reference files with routing rules for exact match, fuzzy intent, and no-argument recommendations.
+Verification for this repository is documentation-level:
 
-### `reference/ideate.md`
-**Status: Complete**
+- All three stage reference files are present and describe their entry gates and outputs.
+- The compose protocol is no longer a placeholder; it documents Storybook discovery, API validation, token resolution, accessibility checks, and the exit gate.
+- The repository contains no automated test suite or renderer.
+- End-to-end confidence requires running the skill against a real target project with Dopamine MCP connected.
 
-Stage 1 protocol in two gated phases:
+## License And Asset Restrictions
 
-*Phase 1 — Interrogation.* Eight dimensions the agent must resolve through conversation: surface identity, user and context, goal and success, content inventory, entry and exit, priority hierarchy, states and edges, existing patterns. Includes interrogation rules (batch 2–3 questions, propose don't just ask, name the gaps, resolve conflicts, know when to stop). Outputs a structured brief in a fixed format that the user must approve before proceeding.
-
-*Phase 2 — Wireframe.* Produces annotated structural SVGs at 360px. Rules enforce grayscale only, real content not lorem ipsum, priority-ranked zones, a visible fold line, and one wireframe per state. Also outputs a component candidates table mapping wireframe zones to likely Dopamine 2.0 components. The user approves before the wireframe is saved as `WIREFRAME.md`.
-
-### `reference/accessibility.md`
-**Status: Complete**
-
-Extracted from the Dopamine 2.0 accessibility guidelines (WCAG 2.2 AA, IS 17802, RPwD Act 2016, GIGW 3.0). Loaded as a mandatory constraint layer by Stage 2. Covers:
-
-- **Colour and contrast** — the four ratios (4.5:1, 3:1, 3:1, exempt) and the three tokens that fail WCAG today (Content/Tertiary, States/Warning, Branding/Coral) with specific restricted-use rules and fixes.
-- **Typography** — minimum size floors from 11pt bold (tags only) to 16pt bold (iOS inputs), Cabinet Grotesk ≥24pt threshold, text scaling requirements at 130% and 200%, and the four truncation failure modes.
-- **Touch targets** — 24×24 floor, 48×48 default, ≥48+12dp for high-stakes actions, plus the spacing exception rule.
-- **Interactive states** — all seven states required for every interactive element (default, hover, focus, pressed, loading, disabled, selected).
-- **Screen reader** — component specs must include audio spec alongside visual spec, alt text rules for five image types.
-- **Forms** — three rules: persistent labels, explain what's wrong, suggest the fix.
-- **Motion and time** — 300ms ceiling, no flashes ≥3/sec, prefers-reduced-motion mandatory.
-- **Language** — Grade 7–8 reading level with clinical-to-plain examples.
-
-### `reference/compose.md`
-**Status: Placeholder — pending MCP integration**
-
-Will contain the Stage 2 protocol for translating wireframe zones into real Dopamine 2.0 components via the Storybook MCP connection. Currently documents the entry gate, the mandatory accessibility reference load, and a preview of key constraints.
-
-### `reference/polish.md`
-**Status: Complete**
-
-Stage 3 protocol in three gated phases:
-
-*Phase 1 — Audit.* The agent reads the composed surface before proposing anything, evaluating visual hierarchy against the wireframe's priority stack, rhythm and pacing, brand presence, signature opportunity, micro-interaction gaps, and copy voice. Outputs a structured assessment shared with the user.
-
-*Phase 2 — Propose.* The agent presents 3–7 departure proposals grouped by risk level (safe, moderate, aggressive). Seven departure categories defined: spacing, typography, colour, elevation/depth, motion, layout, component, and copy — each with concrete examples and constraints noting which accessibility rules remain non-negotiable within that category. Each proposal uses a fixed format: element, system rule bent, current state, proposed state, rationale, risk, accessibility impact. Proposals must stand alone (user can approve any combination).
-
-*Phase 3 — Apply.* Handles four response types (approved, rejected, modified, "tell me more"). Departures applied one at a time with verification. Final accessibility sweep against the full hard floor checklist. Outputs `DESIGN_DECISIONS.md` documenting every approved departure and rejected proposal.
-
-The hard floor — accessibility constraints that are never candidates for departure — is listed at the top of the file and referenced throughout.
-
-## Design system reference
-
-- **Documentation:** https://dopamine2-0.dopamine-ds.workers.dev/
-- **Viewport:** 360px mobile only, no desktop
-- **Token architecture:** base → semantic → component (255 tokens across 7 foundation groups)
-- **Components:** 35 ready (actions, navigation, forms, selection, display, feedback, cart)
-- **Typography:** Cabinet Grotesk (display, ≥24pt), Figtree (all other roles)
-- **Spacing:** 4px rhythm (0, 2, 4, 8, 10, 12, 16, 20, 24, 28, 32, 36, 40)
-- **Brand:** coral #ff5443
-
-## Current status
-
-| File | Status | Notes |
-| --- | --- | --- |
-| `SKILL.md` | ✅ Complete | Entry point and router |
-| `reference/ideate.md` | ✅ Complete | Stage 1 — interrogation + wireframes |
-| `reference/accessibility.md` | ✅ Complete | WCAG 2.2 AA constraint layer |
-| `reference/compose.md` | 🔲 Placeholder | Blocked on Storybook MCP wire-up |
-| `reference/polish.md` | ✅ Complete | Stage 3 — audit, propose, apply |
-| `CLAUDE.md` | ✅ Complete | Project-level instructions |
-
-## What's next
-
-1. Complete the MCP connection to the Dopamine 2.0 Storybook instance
-2. Build out `reference/compose.md` with the full Stage 2 protocol (wireframe-to-component translation using live design system data)
-3. End-to-end test across all three stages against a real surface
-
-## Structural model
-
-The harness is structured as one skill entry point with a lean router, stage-specific knowledge loaded lazily via reference files, and project state tracked through handoff artifacts (`WIREFRAME.md`, `DESIGN_DECISIONS.md`). The base skill stays small and keyword-rich for auto-triggering; heavy instructions only load on demand.
+Original source and generic workflow material are licensed under the [Apache License 2.0](LICENSE). Dopamine-specific internal reference material, brand content, Figma-derived material, and third-party content are excluded from that license as described in [`LICENSE-ASSETS.md`](LICENSE-ASSETS.md).
