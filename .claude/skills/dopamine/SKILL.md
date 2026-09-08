@@ -3,7 +3,9 @@ name: dopamine
 description: >
   Use when the user wants to design, build, compose, audit, or polish a
   mobile-first interface using the Dopamine 2.0 design system. Covers
-  ideation, wireframing, component composition from the governed token-backed
+  problem framing, user stories, solution direction, journeys, flows,
+  information architecture, interface content, interactive low-fidelity
+  wireframing, component composition from the governed token-backed
   library, and visual polish. Handles page flows, cart surfaces, PDP,
   navigation, forms, feedback patterns, health indicators, and pharmacy
   commerce UI for the 1mg product family. Also use when reviewing existing
@@ -37,6 +39,11 @@ You MUST do these steps before proceeding:
 2. **If the user invoked a stage command** (`ideate`, `compose`, `polish`),
    you MUST read `reference/<command>.md` next. Non-optional. The reference
    defines the stage's protocol; without it you will skip steps.
+
+   For `ideate`, you MUST also read `reference/ux/modes.md` before asking
+   the user anything. It sets evidence tagging and mode selection, and it
+   governs which of the `reference/ux/*` files load and when. Stage 1 is an
+   orchestrator over that folder — do not run it from `ideate.md` alone.
 
 3. **Familiarise yourself with the existing codebase.** Read at least one
    project file (token JSON, CSS variables, a representative component or
@@ -96,7 +103,12 @@ mirror Figma variant names (type / state / size / style).
 ### Accessibility (WCAG 2.2 AA · IS 17802 · RPwD Act 2016)
 
 Accessibility is legally binding in India (Article 21, SC Apr 2025).
-Full reference at `reference/accessibility.md`, loaded by Stage 2.
+Split across two references:
+- `reference/accessibility-structural.md` — layout-level constraints
+  (touch targets, truncation, text scaling, state enumeration, recovery).
+  Loaded by Stage 1 before wireframe construction.
+- `reference/accessibility.md` — visual and token constraints (contrast
+  ratios, failing tokens, font families, motion). Loaded by Stage 2.
 
 Critical constraints that affect all stages:
 - Three tokens fail WCAG on white: Content/Tertiary (3.29:1),
@@ -124,7 +136,7 @@ creativity · low cognitive load · aesthetics aid usability.
 
 | Command            | Stage | Description                                          | Reference              |
 | ------------------ | ----- | ---------------------------------------------------- | ---------------------- |
-| `ideate [target]`  | 1     | Question until clear, then produce wireframes        | reference/ideate.md    |
+| `ideate [target]`  | 1     | Understand, choose a direction, structure, wireframe | reference/ideate.md + reference/ux/ |
 | `compose [target]` | 2     | Build with real components and design principles     | reference/compose.md   |
 | `polish [target]`  | 3     | Propose intentional departures for visual distinction | reference/polish.md   |
 
