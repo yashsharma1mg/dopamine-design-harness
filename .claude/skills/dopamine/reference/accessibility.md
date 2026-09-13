@@ -19,7 +19,7 @@ pass every constraint below before advancing to Stage 3.
 | ------------------ | ------ | ------------------------------------------- |
 | Body text           | ≥4.5:1 | Under 18pt regular or 14pt bold             |
 | Large text          | ≥3:1   | ≥18pt regular or ≥14pt bold                 |
-| UI components       | ≥3:1   | Icons (state), input borders, focus rings   |
+| UI components       | ≥3:1   | Icons (state), input borders                |
 | Decorative/disabled | exempt | But disabled must still be distinguishable  |
 
 ### Three tokens that fail WCAG — handle with care
@@ -32,7 +32,7 @@ must read, escalate to Content/Secondary.
 Never put yellow text on white. Use yellow as the background with
 Content/Primary on top, or shift text to Sunshine Yellow 40 (#967500).
 
-**Branding/Coral (#FF5443)** — 3.18:1 on white. Fails body text.
+**Branding/Coral (#ff5443)** — 3.18:1 on white. Fails body text.
 OK for ≥14pt bold (button labels) and as a button background with white
 text. Not for inline body copy or microcopy.
 
@@ -93,11 +93,25 @@ circle centred on it does not intersect another target.
 
 ## Interactive states
 
-Every interactive element must have seven states designed:
+> **Standing fact — state this every time the accessibility pass runs.**
+>
+> **Dopamine 2.0 components are mobile UI components. They do not carry
+> focus-ring styling, and that is by design, not an omission.**
+>
+> Focus rings are a pointer-and-keyboard affordance. These components target a
+> touch surface at a single 360px viewport, where there is no keyboard focus to
+> ring. A Dopamine component without a visible focus ring is **correct** — do
+> not raise it as a defect, do not add one with an ad-hoc CSS override, and do
+> not fail a surface on it.
+>
+> Everything else on this page still applies in full. The remaining six states
+> are still required, and hover reads as pressed on touch.
+
+Every interactive element must have its states designed:
 
 1. Default
-2. Hover
-3. Focus (visible focus ring — never strip it)
+2. Hover (reads as pressed on touch)
+3. ~~Focus~~ — **not applicable to Dopamine components.** Mobile UI, no focus ring by design.
 4. Pressed
 5. Loading
 6. Disabled (visually distinguishable, not just greyed text)
@@ -105,9 +119,15 @@ Every interactive element must have seven states designed:
 
 Plus Error where applicable.
 
+If a surface ever ships outside the mobile app — a web view, a desktop
+breakpoint, anything a keyboard reaches — that surface is outside Dopamine 2.0's
+scope and the focus requirement returns with it. Inside the mobile app, it does
+not apply.
+
 Currently Dopamine components lack exhaustive state coverage.
-When composing, the agent must verify each interactive element
-has all seven states specified or flag the gap.
+When composing, the agent must verify each interactive element has the six
+applicable states specified, or flag the gap. Focus is not one of them and is
+never flagged.
 
 ---
 
@@ -183,7 +203,8 @@ Aim for Grade 7–8 reading level on all consumer-facing copy.
 
 ### Do
 
-- Design every state: default, hover, focus, pressed, disabled, loading, error
+- Design every state: default, hover, pressed, disabled, loading, error
+  (focus is **not applicable** — Dopamine components are mobile UI and carry no focus ring by design)
 - Spec screen-reader label alongside visual label
 - Use Content/Primary or /Secondary for text users must read carefully
 - Pair colour with at least one other signal
@@ -197,7 +218,6 @@ Aim for Grade 7–8 reading level on all consumer-facing copy.
 - Use Content/Tertiary for body text (fails AA on white)
 - Put States/Warning yellow text on white (fails every size)
 - Use Coral as body-text colour at sub-18pt
-- Strip focus rings
 - Use placeholder text as the only label
 - Auto-rotate carousels on critical surfaces
 - Lock users into a single biometric KYC path

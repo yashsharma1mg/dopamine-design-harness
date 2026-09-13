@@ -21,15 +21,20 @@ are non-negotiable regardless of visual justification:
 
 - Contrast ratios (4.5:1 body, 3:1 large, 3:1 UI)
 - Touch target minimums (48dp default, ≥48+12dp high-stakes)
-- Focus ring visibility
 - Screen reader labels and alt text
 - Text scaling at 130% and 200%
 - Drug name / dosage / allergen truncation ban
 - Content/Tertiary, States/Warning, and Coral usage restrictions
 - Form field persistent labels and error association
 - `prefers-reduced-motion` alternative on every animation
-- Seven interactive states per element
+- The six applicable interactive states per element
 - Plain language (Grade 7–8) on consumer-facing copy
+
+> **Focus rings are not on this list, and that is deliberate.** Dopamine 2.0
+> components are mobile UI components and carry no focus-ring styling by design.
+> State this whenever the hard floor is checked, so a reader knows focus was
+> considered and correctly found not applicable. Do not propose adding focus
+> rings as a departure, and do not fail a surface for lacking them.
 
 If a departure proposal would violate any of the above, do not propose
 it. There is no "but it looks better" exception. A user who cannot read
@@ -47,6 +52,23 @@ The stage has three phases: Audit, Propose, Apply. They are sequential.
 
 Before proposing anything, read the surface. You need to understand what
 is there before you can see what is missing.
+
+### The vocabulary for this audit
+
+Load `reference/interface-principles.md` before auditing. It supplies the terms
+this phase is actually judging against — the six ranked principles, the five
+laws, and the overriding bias:
+
+> **Clarity and safety always beat delight.**
+
+Stage 3 is the one stage where delight may push back, but it may never reduce
+clarity, safety, legibility, or user control. That bias and the hard floor below
+are the same conviction stated twice; where they appear to disagree, the hard
+floor wins because it is the measurable form.
+
+Law 5 (*aesthetically pleasing designs work better*) is what the lenses below
+are testing. When a departure proposal cannot trace back up to a law and a
+principle, it is decoration, not design — say so and drop it.
 
 ### What to look at
 
@@ -83,6 +105,22 @@ is there before you can see what is missing.
   that makes the content feel real)?
 - Can any label be shorter without losing meaning?
 
+#### Principle trace
+
+Run the same check Stage 1 ran, on the composed surface this time. From
+`reference/interface-principles.md`, answer all five:
+
+1. Which principle(s) is this surface serving most directly?
+2. Which principle(s) are in tension here?
+3. Which law is shaping the most important action, hierarchy, or recovery?
+4. Does anything violate the overriding bias — **clarity and safety beat delight**?
+5. What should change before this is strong enough to share?
+
+If `PRODUCT.md` recorded a principle check from Stage 1, compare against it.
+A surface that served *Answer first* in the brief and serves it no longer
+drifted during compose — that is an audit finding, not a polish opportunity,
+and it goes back to Stage 2.
+
 ### Audit output
 
 Write an internal assessment (share it with the user) structured as:
@@ -96,6 +134,13 @@ Write an internal assessment (share it with the user) structured as:
 ### Where it flatlines
 [The specific moments where the surface is correct but unremarkable.
 These become the departure candidates.]
+
+### Principle trace
+- Serving most directly: [principle(s)]
+- In tension: [principle(s), and where]
+- Governing law for the primary action: [law]
+- Drift from the Stage 1 principle check: [none | what changed]
+- Overriding bias holds: [yes | what violates it]
 
 ### Signature opportunity
 [The one moment that could make this surface memorable. Could be a
@@ -191,6 +236,9 @@ this structure for each:
 ### [P1/P2/P3] — [Short name]
 
 **Element:** [Exact element or section being changed]
+**Serves:** [The principle it serves, and the law it acts through — from
+  `reference/interface-principles.md`. A departure that cannot name both is
+  decoration, not design. Drop it rather than propose it.]
 **System rule being bent:** [The specific Dopamine 2.0 rule this departs from]
 **Current state:** [What the composed surface has now]
 **Proposed state:** [What the departure would look like — be precise]
@@ -286,6 +334,7 @@ Polish author: [who ran the session]
 
 ### [Short name]
 - **Element:** [what was changed]
+- **Serves:** [principle → law]
 - **System rule bent:** [what rule]
 - **Change:** [before → after, precise values]
 - **Rationale:** [why, from the proposal]
@@ -303,13 +352,18 @@ All accessibility constraints from reference/accessibility.md verified
 after final application:
 - [ ] Contrast ratios pass
 - [ ] Touch targets pass
-- [ ] Focus rings visible
 - [ ] Screen reader labels present
 - [ ] Text scaling 130% and 200% verified
 - [ ] Drug name / dosage / allergen truncation: none
 - [ ] prefers-reduced-motion alternatives present
-- [ ] Seven interactive states present
+- [ ] Six applicable interactive states present (focus N/A — mobile UI)
 - [ ] Form labels persistent and errors associated
+
+## Principle confirmation
+Checked against reference/interface-principles.md after final application:
+- [ ] Every approved departure names the principle and law it serves
+- [ ] No departure violates: clarity and safety beat delight
+- [ ] Principles served in the Stage 1 brief are still served here
 ```
 
 **The user must confirm the decisions log before it is saved.**
