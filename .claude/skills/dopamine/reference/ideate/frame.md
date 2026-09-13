@@ -1,9 +1,5 @@
----
-name: articulate-problem
-description: Turn the available problem, user, product, and constraint context into a clear design problem before proposing a solution.
----
+# Stage 1 · Phase 3 — Frame the real problem
 
-# Articulate the Problem
 
 ## Purpose
 
@@ -44,11 +40,11 @@ Ask only for missing information that could change the problem definition or the
 
 ## Set the claim boundary
 
-Use the response mode selected by the main workflow:
+Use the research decision selected by the main workflow:
 
-- **Move forward:** articulate the problem when the user, situation, current behavior, and breakdown are sufficiently supported.
-- **Move carefully:** articulate only the supported scope. Keep an uncertain cause visible and avoid making it carry the recommendation.
-- **Learn first:** do not create a polished problem articulation. Return what is known, what is missing, and the questions or lightweight learning needed to understand the problem.
+- **Research not needed for this step:** articulate the problem when the user, situation, current behavior, and breakdown are sufficiently supported.
+- **Move ahead with assumptions:** articulate only the supported scope. Keep an uncertain cause visible and avoid making it carry the recommendation.
+- **Stop for research first:** do not create a polished problem articulation. Return what is known, what is missing, and the questions or lightweight learning needed to understand the problem.
 
 A new research study is not required when the available material already provides enough user understanding. A directly observable, bounded design mismatch may be named without claiming to know the user's motivation or the deeper cause.
 
@@ -127,5 +123,5 @@ Do not substitute a business metric for the user's outcome. Connect them.
 - It leaves room for more than one solution direction.
 - Its assumptions are visible and correctable.
 - The basis and limits of the framing are explicit.
-- The selected response mode matches the consequence and available understanding.
+- The research decision matches the consequence and available understanding.
 - The success condition follows from the problem.

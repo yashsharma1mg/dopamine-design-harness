@@ -1,9 +1,11 @@
----
-name: research-plan
-description: Plan proportionate research when a material design decision cannot be supported responsibly by existing understanding.
+# Stage 1 · Research branch
+
+Reachable only from a **Stop for research first** decision at branch point 1,
+and only when the user asks for research help. Guide the research; never
+invent findings or present assumptions as participant feedback.
+
 ---
 
-# Research Plan
 
 ## What this step is for
 
@@ -31,9 +33,9 @@ Recommend learning first when:
 
 This distinction follows the main workflow:
 
-- **Move forward:** no new research is needed for the current decision.
-- **Move carefully:** continue within a supported, reversible scope and identify what should be checked later.
-- **Learn first:** answer the blocking question before recommending the solution.
+- **Research not needed:** no new research is needed for the current decision.
+- **Move ahead with assumptions:** continue within a supported, reversible scope and identify what should be checked later.
+- **Stop for research first:** answer the blocking question before recommending the solution.
 
 ## Offer a research guide
 
@@ -44,11 +46,22 @@ When the user asks for research help and the available understanding is insuffic
 - why those gaps could change the design direction;
 - how a focused research guide could help.
 
+Structure this explanation using bold section titles so it is easy to scan:
+
+- **What we know**
+- **What is missing**
+- **Why research is needed**
+- **What we need to learn**
+- **Suggested research approach**
+- **What I can do next**
+
 Then ask whether the user wants the guide. Do not create it automatically merely because research may be useful.
 
 The offer should be direct:
 
 > I can create a research guide covering what the research needs to uncover, the assumptions to examine, suitable participants and methods, session questions or tasks, what to observe, how to organise the findings, and which design decisions the findings should inform. Would you like me to create it?
+
+When the next step needs user approval, introduce it with the exact heading: **Shall I proceed with**
 
 If the user agrees, ask only for setup information that materially affects the guide:
 
@@ -61,7 +74,7 @@ If an answer is unavailable, mark it as an assumption and keep the guide within 
 
 ## Recommend the smallest useful learning activity
 
-In **Learn first**, do not automatically create a full research plan. First return:
+In **Stop for research first**, do not automatically create a full research plan. First return:
 
 ```markdown
 ## Lightweight Learning Recommendation
@@ -198,3 +211,61 @@ When the user accepts the offer, return:
 - A full plan was not produced when a lightweight recommendation was sufficient.
 - A research guide was created only after the user accepted the offer or explicitly requested one.
 - The output plans learning without fabricating findings.
+
+---
+
+
+## What this step is for
+
+Use this reference after the user explicitly requests a script or accepts the offer to create a research guide. Write the questions, tasks, and moderator notes that help the user or research team run the session. A good script feels like a natural conversation, not an interrogation.
+
+Before writing, confirm the decision the research should inform, who or what the team can learn from, what is already known, and which constraints affect the session. Ask only for missing information that would materially change the script.
+
+## What the output looks like
+
+```markdown
+# Research Script
+
+## Session Goal
+...
+
+## Moderator Intro
+...
+
+## Warm-Up Questions
+1. ...
+2. ...
+
+## Context Questions
+1. ...
+2. ...
+
+## Task Prompts
+1. ...
+2. ...
+
+## Follow-Up Questions
+1. ...
+2. ...
+
+## Comprehension Checks
+1. ...
+2. ...
+
+## Closing Questions
+1. ...
+2. ...
+
+## Notes for Moderator
+- ...
+```
+
+## Ground rules
+
+- Don't lead the witness. Ask open questions that don't hint at the "right" answer.
+- Ask about past behavior before asking for opinions.
+- Keep tasks realistic. Frame them the way the user would actually encounter them, not how the product team thinks about them.
+- Don't explain the UI before asking someone to use it. That defeats the purpose.
+- When reviewing flow clarity, ask participants to identify their next action without prompting them toward it.
+- Treat the script as a guide for the user or research team to conduct; do not imply that the agent has recruited or interviewed participants.
+- Never add invented findings, quotes, expected answers, or claims of validation to the script or its follow-up.

@@ -1,208 +1,269 @@
 # Stage 2 — Compose
 
-Translate the approved wireframe into a real surface built from Dopamine 2.0
-components with correct token resolution. This stage commits to *how* the
-surface is built — components, variants, props, tokens — under the design
-system's interface principles and its accessibility floor. It makes the
-surface correct. It does not make it memorable — that is Stage 3.
+Translate the approved wireframe into real Dopamine 2.0 components with correct
+token resolution, variant selection, and prop configuration. This stage commits
+to *what it is built from*. It does not revisit the structure — that was Stage 1
+— and it does not depart from the system — that is Stage 3.
 
 ## Entry gate
 
-Compose refuses to start unless both are true:
+Requires all of:
 
-1. **An approved `WIREFRAME.md` exists at the project root** (Stage 1 output:
-   brief + annotated wireframes + component candidates). If it is missing,
-   send the user back to `ideate`. Do not compose from a verbal description.
-2. **The Storybook MCP connection is available.** This stage cannot resolve
-   component APIs or validate props without it. If the MCP is not connected,
-   stop and tell the user to connect it before proceeding — do not guess
-   component props from memory.
+- An approved `WIREFRAME.md` at the project root, with its solution coverage
+  table and component candidates. Without it, send the user back to `ideate`.
+- The Dopamine MCP reachable. Verify with `list_components` before anything
+  else. If it fails, see **Degraded mode** below — do not silently guess.
 
-## Mandatory references — load both before composing
+## Mandatory references
 
-Both are non-optional. Read them now, not later.
+1. `reference/accessibility.md` — loaded in full, not skimmed. Every composed
+   surface must pass every constraint before Stage 3. Non-optional:
+   accessibility on a healthcare product is legally binding and clinically
+   necessary.
+2. `reference/interface-principles.md` — the surface must still serve the
+   principles the Stage 1 brief recorded. Compose is where that quietly slips.
+3. `reference/content-design.md` — when composing copy into real components.
 
-1. **`reference/interface-principles.md`** — the design-conviction layer
-   (six principles, five laws, the visual system, and the overriding bias:
-   *clarity and safety beat delight*). Every zone is composed *toward* this.
+## The MCP is the source of truth
 
-2. **`reference/accessibility.md`** — the legal and clinical floor
-   (WCAG 2.2 AA · IS 17802 · RPwD Act 2016). Every composed surface must pass
-   *every* constraint here before it can advance to Stage 3. Accessibility on
-   a healthcare app is legally binding and clinically necessary — a user who
-   cannot read a dosage may take the wrong medicine.
+Never write a component from memory. The tools return the real contract,
+extracted from the actual TypeScript types:
 
-The two are complementary: interface-principles is the intent to build
-toward; accessibility is the floor you may never fall below. When principle
-and floor appear to conflict, the floor wins — always.
+| Need | Tool |
+| --- | --- |
+| What exists at all | `list_components` |
+| Find the right one by intent | `search_components` |
+| **Props, variants, states, a11y, usage** | `get_component_docs` |
+| Composed multi-component recipes | `list_patterns` / `get_pattern_docs` |
+| Token values | `get_tokens` (`base`/`semantic`/`component`/`space`/`radius`/`layout`/`font`/`shadow`) |
+| Install, theming, conventions | `get_general_docs` |
+| Project-level agent rules | `get_agent_rules` |
+| See it rendered | `preview_component` / `preview_pattern` |
 
----
-
-## The Storybook MCP wire-up
-
-This is where the MCP connection earns its place. Use the `storybook-*` tools
-for four operations, in this order, and never substitute memory for them:
-
-1. **Discover** — list and search the component library to confirm which
-   components actually exist and what they are called. The candidate list in
-   `WIREFRAME.md` is advisory; the MCP is authoritative.
-2. **Read the API** — pull each component's documented props, variant axes
-   (type / state / size / style), and token slots. Do not invent props or
-   assume a variant exists. If the wireframe needs a variant the component
-   does not expose, that is a gap — flag it, do not fake it.
-3. **Validate** — check that the specific prop and variant combination you
-   intend is a documented, supported configuration. Unsupported combinations
-   are departures and belong to Stage 3, not here.
-4. **Preview / confirm** — render the component to confirm the visual output
-   matches the wireframe zone's intent before you commit it to the surface.
-
-Also pull the canonical token values through the MCP (or the documentation
-site at https://dopamine2-0.dopamine-ds.workers.dev/) rather than hardcoding —
-every component value must resolve through the canonical token JSON.
+`get_component_docs` before every component you use. Not once per session —
+once per component. A prop you remember is a prop you are inventing.
 
 ---
 
 ## Protocol
 
-Four phases, sequential. Map → Resolve → Check → Gate. Do not jump to code
-before the mapping and token resolution are settled.
+### Phase 1 — Resolve the candidates
+
+The wireframe's component candidates table is **advisory**. Stage 1 wrote it
+without the MCP; treat it as a hypothesis to check, not a decision to apply.
+
+For every zone in the coverage table:
+
+1. `search_components` on the zone's *intent*, not the candidate's name.
+2. `get_component_docs` on each plausible match.
+3. Pick one, and record why — including why the Stage 1 candidate was wrong
+   where it was.
+4. Before hand-rolling anything, check `list_patterns`. A composed pattern
+   (`cart-checkout`, `for-you`, `homepage`, `pdp`) may already cover the whole
+   surface, and a pattern beats assembling its parts yourself.
+
+Output a resolved mapping: zone → component → variant → why.
+
+**If a zone maps to no component**, say so explicitly. Do not approximate with
+a component that nearly fits and then override its styling — that is the single
+most common way a design system gets quietly abandoned. Options, in order:
+reshape the zone to what the system offers (cheapest), raise it as a genuine
+system gap (honest), or compose it from primitives and flag it for the DS team.
+
+### Phase 2 — Resolve the tokens
+
+Every value resolves through the three-layer hierarchy. Components never
+reference base tokens.
+
+```
+base       raw primitives      {base.color.brand.coral}      never used directly
+semantic   meaning-bearing     semantic.color.branding.1mg   the default choice
+component  slot-specific       component.<name>.<variant>    stable contracts
+```
+
+In CSS, reference the variables:
+
+```css
+background: var(--semantic-color-background-primary);
+color: var(--semantic-color-content-primary);
+padding: var(--space-16);
+border-radius: var(--radius-8);
+box-shadow: var(--shadow-level-2);
+```
+
+In TS: `tokens["semantic.color.branding.1mg"]`.
+
+Naming, confirmed from the live token set:
+
+- Colours are nested — `--semantic-color-content-primary`, `--semantic-color-content-cta`, `--semantic-color-stroke-subtle`, `--semantic-color-branding-1mg`. `--base-color-*` exists; do not use it directly.
+- Spacing, radius, type and shadow are top-level — `--space-16`, `--radius-8`, `--font-size-body-14`, `--shadow-level-2`.
+- The brand role is `branding.1mg`; the raw value is `base.color.brand.coral` (`#ff5443`). Inline CTA text has its own role, `content.cta`.
+
+**Resolve the Stage 1 type roles now.** The wireframe annotated text by role —
+Page title → Heading → Title → Body → Sub text — precisely because Stage 1 had
+no tokens. Map each to its real `--font-size-*` token via `get_tokens`. Do not
+carry a pixel value forward from the wireframe.
+
+Never hardcode a hex, a px spacing, or a radius that a token expresses.
+
+### Phase 3 — Compose
+
+- Import from the barrel: `import { X } from "@dopamine2.0/ui"`. Import
+  `@dopamine2.0/ui/styles.css` once, at the app root.
+- Match each prop contract exactly. Props and their literal union values come
+  from `get_component_docs`. **Inventing a prop, or a value outside a
+  documented union, is a defect** — not a shortcut.
+- Do not restyle a component with ad-hoc CSS. Use its variants and states. If
+  no variant expresses what you need, that is a Stage 3 departure requiring
+  user approval, or a system gap — not a local override.
+- Do not add an icon library. Icons ship inside the components.
+- Icon sizing: `DsIcon`/`Icon` render the glyph at the given `size` with no
+  built-in padding, while Figma insets the glyph in a larger frame. Size to the
+  **visible glyph**, roughly `Figma frame × 0.6`. Inline row-affordance chevrons
+  land at 9–12px, never 16–20px.
+- Selection controls (Checkbox, Radio, Toggle) are uncontrolled-capable: they
+  self-toggle when no `checked` is passed and still fire their change callback.
+  Do not wire redundant state around them.
+- Build every state the coverage table names. A state marked *deferred with
+  reason* in Stage 1 stays deferred; a state marked *mapped* gets built.
+
+### Phase 4 — Verify
+
+Run all four. Report failures; do not quietly fix them by bending a rule.
+
+**1 · Coverage.** Every item in the `WIREFRAME.md` coverage table is built, or
+still carries its Stage 1 deferral reason. Nothing dropped silently.
+
+**2 · Tokens.** No hardcoded hex, px spacing, or radius that a token expresses.
+No component referencing a base token directly.
+
+**3 · Accessibility — the full `accessibility.md` pass.** This is the gate to
+Stage 3, and the whole list runs:
+
+- Contrast: 4.5:1 body, 3:1 large, 3:1 UI. The three restricted tokens
+  (Content/Tertiary 3.29:1, States/Warning 2.79:1, Branding/Coral 3.18:1) fail
+  on white — honour their restricted-use rules.
+- Touch targets: 48dp default, 24×24 absolute floor, ≥48+12dp for high-stakes
+  (OTP, payment, dosage).
+- Drug names, dosages, allergens, frequency: **never truncate**. Wrap, never
+  ellipsis. Verify at the longest real content, not placeholder length.
+- Text scaling at 130% and 200% without loss.
+- Screen-reader labels specified alongside every visual label.
+- Six applicable states per interactive element: default, hover, pressed,
+  loading, disabled, selected. **Focus is not applicable** — see below.
+- `prefers-reduced-motion: reduce` on every animation.
+- Form fields: persistent labels, errors explained and associated.
+- Grade 7–8 reading level on consumer-facing copy.
+
+> **State this every time the accessibility pass runs. Do not omit it, and do
+> not re-open it as a question.**
+>
+> **Dopamine 2.0 components are mobile UI components. They do not carry
+> focus-ring styling, and that is by design.**
+>
+> Focus rings are a pointer-and-keyboard affordance; these components target a
+> touch surface at a single 360px viewport. A Dopamine component without a
+> visible focus ring is **correct**. Do not flag it as a defect, do not add one
+> with a CSS override, and do not fail the surface on it. Every other constraint
+> above applies in full.
+>
+> The surface report carries this as a stated fact under **Accessibility pass**,
+> so a reader knows focus was considered and correctly found not applicable —
+> not that it was skipped.
+
+**4 · Principles.** The surface still serves what the Stage 1 brief said it
+would. Drift here is a compose defect, not a polish opportunity.
+
+Use `preview_component` to see a component rendered when the prop contract is
+ambiguous, rather than guessing and verifying later.
 
 ---
 
-### Phase 1 — Map zones to real components
+## Degraded mode — MCP unavailable
 
-Take each zone from `WIREFRAME.md` and bind it to a real Dopamine 2.0
-component via the MCP.
+If `list_components` fails, say so before doing anything else, and offer to
+stop. Composing without the MCP means inventing props and token values, which
+is worse than not composing.
 
-- Start from the wireframe's **component candidates** table, but verify every
-  entry against the MCP `Discover` and `Read the API` steps. Candidates are a
-  starting guess, not a contract.
-- For each zone, select the component, the variant (type / state / size /
-  style), and the props that realise the wireframe's intent and priority rank.
-- Preserve the wireframe's **priority stack.** The P1 zone must map to the
-  component and placement that makes it the strongest thing on the surface
-  (Law 1 — make the next action obvious).
-- If a zone has no matching component, stop and record it as a **composition
-  gap.** Do not force an unrelated component into the slot and do not invent
-  one. Gaps are surfaced to the user, not papered over.
+If the user chooses to proceed anyway, every output is provisional:
 
-Output of this phase: a zone → component map, with variant and prop notes.
+- Flag every component and every value as unverified.
+- Use only the type-scale fallback below, and mark each use.
+- Do not claim design-system accuracy.
+- Re-resolve everything against the MCP before Stage 3.
 
----
+### Type scale fallback
 
-### Phase 2 — Resolve tokens
+Stopgap only. Resolve from `get_tokens` whenever the MCP is reachable.
 
-Every value on the surface resolves through the token architecture. No raw
-hex, no magic numbers.
+| Role | Fallback | Notes |
+| --- | --- | --- |
+| Page title | 20–22px, semibold | Cabinet Grotesk only at ≥24pt; below that, Figtree |
+| Heading / Title | 16–18px, medium or semibold | Figtree |
+| Body | 14–16px, regular | Figtree. 16px bold is the iOS input floor |
+| Sub text / caption | 12px, regular | Never below the accessibility size floors |
 
-- **Semantic tokens are the API.** Default to `token.semantic.*` for colour,
-  spacing, and type roles. Reach for `token.component.*` only where a
-  component contract requires it.
-- **Components never reference base tokens** (`token.base.*`) directly. Base
-  is reference material only.
-- **The three failing tokens have restricted usage** (from `accessibility.md`):
-  Content/Tertiary (3.29:1), States/Warning (2.79:1), Branding/Coral (3.18:1).
-  Do not use them for body text on white. Follow the escalation rules in the
-  accessibility reference.
-- Honour the system constants: 360px mobile only, 16px page margin, 8px
-  gutter, 4px spacing rhythm, the defined radii scale, Figtree for functional
-  and expressive type, Cabinet Grotesk only at ≥24pt.
-
----
-
-### Phase 3 — Check against principles, laws, and the floor
-
-Run every composed zone through both references. This is the substance of the
-stage — a surface that renders but fails these checks is not composed, it is
-just assembled.
-
-**Interface principles** (`interface-principles.md`) — for each zone ask:
-
-- **Trust through explainability** — is anything shown (a recommendation, a
-  price, a substitute, a flag) without a plain-words *why*?
-- **Calm over alarm** — does any state use alarming colour or language, or
-  fabricate scarcity, where a neutral frame with a clear next step would do?
-- **Context aware** — does the surface adjust emphasis to the user from the
-  brief, or treat them as generic? Does it re-ask for known information?
-- **Answer first** — does the P1 zone deliver what the user came for before
-  proof, choices, and extras — not after a link, banner, or ad?
-- **Progressively disclose** — is anything safety- or clarity-critical hidden
-  behind a disclosure? (Essential content stays in view; only extras collapse.)
-- **Participation creates ownership** — are the real choices honest, with no
-  confirm-shaming or dark patterns?
-- **The laws** — is the next action obvious (Law 1); are mistakes prevented
-  and recoverable (Law 2); is every pattern consistent with the rest of the
-  app (Law 3); is the cognitive load chunked and are defaults smart (Law 4);
-  is the surface calm, readable, and responsive (Law 5)?
-
-When a principle and a law disagree, apply the overriding bias: **clarity and
-safety beat delight.**
-
-**Accessibility floor** (`accessibility.md`) — non-optional, every constraint:
-
-- Contrast ratios pass (4.5:1 body, 3:1 large, 3:1 UI).
-- Drug names, dosages, allergens, frequency **never truncate** — wrap, never
-  ellipsis.
-- Every interactive element has all seven states (default, hover, focus,
-  pressed, loading, disabled, selected) — or the gap is flagged.
-- Screen-reader label specified alongside every visual label; alt text follows
-  the content rules.
-- Touch targets ≥48dp (≥48+12dp for high-stakes: OTP, payment, dosage,
-  destructive, allergy acknowledgment, KYC).
-- Layout survives 130% and 200% text scaling; containers use `min-height`.
-- Form fields carry persistent labels; errors are programmatically associated
-  and say what's wrong and how to fix it.
-- `prefers-reduced-motion: reduce` alternative on every animation.
-- Consumer copy at Grade 7–8 reading level.
-
-Where a component in the library lacks exhaustive state coverage, verify the
-missing states yourself or flag the gap — do not assume the component handles
-it.
-
----
-
-### Phase 4 — Exit gate to Stage 3
-
-The surface may advance to `polish` only when:
-
-- Every zone maps to a real component with resolved tokens (no raw values, no
-  unresolved slots).
-- Every interface principle and law check in Phase 3 is either satisfied or
-  logged as an explicit, user-acknowledged trade-off.
-- **Every** accessibility constraint passes. This is a hard gate — a single
-  failing constraint sends the surface back, not forward.
-- All composition gaps are surfaced to the user, not hidden.
-
-If anything fails, the surface stays in compose. Polish on a broken or
-inaccessible foundation produces polished garbage.
+A fallback value is never a token. A hardcoded size that survives into the
+committed surface is a defect.
 
 ---
 
 ## Output — the composed surface
 
-Deliver:
+Deliver the surface plus a short report:
 
-1. **The surface code** — real `@dopamine2.0/ui` components with typed props
-   mirroring the Figma variant names, all values resolving through tokens.
-2. **The zone → component map** from Phase 1, with variant and prop choices.
-3. **A compliance record** confirming Phase 3 — a short checklist showing each
-   accessibility constraint passing and any principle/law trade-off the user
-   acknowledged.
-4. **The composition gaps list** — any zone with no matching component, any
-   component missing states, any variant the wireframe needed but the library
-   does not expose. This carries forward as context for Stage 3.
+```markdown
+# Composed: [Surface Name]
 
-The user should be able to see, from the output alone, that the surface is
-correct and accessible before anyone talks about making it memorable.
+## Resolved components
+| Zone | Component | Variant | Why | Stage 1 candidate |
+| --- | --- | --- | --- | --- |
 
----
+## Patterns used
+[pattern name, or none]
+
+## Unmapped zones
+[zone → what the system lacks → reshaped / raised as gap / composed from primitives]
+
+## Token resolution
+- Type roles → tokens: [Page title → --font-size-…, …]
+- Any value not expressible as a token: [none, or what and why]
+
+## States built
+[from the coverage table: built / still deferred with reason]
+
+## Accessibility pass
+[each hard-floor item: pass, or the specific failure]
+
+> Focus states: **not applicable.** Dopamine 2.0 components are mobile UI
+> components and carry no focus-ring styling by design. The six applicable
+> states were verified.
+
+## Principle check
+[principles the brief recorded → still served? drift?]
+
+## Ready for Stage 3
+[yes | what must go back through compose first]
+```
+
+### Exit
+
+When the surface renders correctly, tokens resolve, and the full accessibility
+pass is clean:
+
+> Stage 2 is complete. The surface composes from real Dopamine 2.0 components
+> with tokens resolved, and the accessibility pass is clean.
+>
+> Next: **`/dopamine polish`** — propose intentional departures for visual
+> distinction, each one approved by you before it is applied.
+
+If anything failed the accessibility pass, do **not** advance. Stage 3 refuses a
+broken foundation, and polishing one produces polished garbage.
 
 ## What this stage does NOT do
 
-- Interrogate or wireframe (that's Stage 1 — ideate)
-- Make intentional departures from the system for visual distinction
-  (that's Stage 3 — polish)
-- Override or negotiate any accessibility constraint (never, in any stage)
-- Invent components, props, or variants the MCP does not confirm
-- Hardcode values that should resolve through tokens
-- Advance a surface with any failing accessibility constraint
+- Revisit information architecture or priority (Stage 1 — ideate)
+- Depart from the system for visual distinction (Stage 3 — polish)
+- Override accessibility constraints (never, at any stage)
+- Invent props, prop values, or token names
+- Restyle components with ad-hoc CSS

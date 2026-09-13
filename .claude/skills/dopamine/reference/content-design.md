@@ -1,9 +1,8 @@
----
-name: content-design
-description: Design interface language that helps the user understand, decide, act, trust, and recover.
----
+# Content design
 
-# Content Design
+Used by Stage 1 (copy is part of the hierarchy, not filler added later) and by
+Stage 2 when composing real components.
+
 
 ## Purpose
 
@@ -21,7 +20,7 @@ For each state, identify:
 - what the product knows, infers, recommends, or has done;
 - what happens after the user acts.
 
-If the content spans multiple stages, use `user-understanding.md` before drafting copy.
+If the content spans multiple stages, use `ideate/comprehend.md` before drafting copy.
 
 If you cannot name the user's job at this step, do not draft copy yet. Clarify the moment first.
 

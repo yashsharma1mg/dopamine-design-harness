@@ -1,187 +1,277 @@
 # Stage 1 — Ideate
 
-Understand the problem, choose a direction, structure the experience,
-then produce the wireframe. This stage commits to *what* gets built and
-*why*, and to the reasoning that survives review.
-
-No visual decisions. No colour, no type treatment, no component selection,
-no tokens. Those are Stage 2.
+Understand the problem, frame it, choose a direction, then produce an
+interactive low-fidelity wireframe. This stage commits to *what* gets built and
+*why*. It selects no Dopamine components, resolves no tokens, and applies no
+brand colour — those belong to Stage 2.
 
 ## Entry gate
 
-Always open. This is where every surface starts.
+Always open. This is where every new surface starts.
 
-## Reference load order
+Valid inputs: a text prompt, a Figma or FigJam board, a screenshot, a product
+brief or PRD, or an existing surface to be redesigned.
 
-| Step | Load | When |
-| --- | --- | --- |
-| 0 | `ux/modes.md` | Always, first |
-| 0 | `ux/read-board.md` | Figma / FigJam / multi-frame input |
-| 0 | `ux/read-prd.md` | PRD or product brief supplied |
-| 1 | `ux/user-story.md` | Move forward / Move carefully, unless story already agreed |
-| 1 | `ux/articulate-problem.md` | Problem is new, broad, symptom-led, or ambiguous |
-| 2 | `ux/solution.md` | New solution or meaningful redesign |
-| 3 | `ux/user-understanding.md` | Multiple stages, consequential decisions, or new concepts |
-| 3 | `ux/user-flow.md` | Flow, journey, sitemap, or state model needed |
-| 3 | `ux/content-design.md` | Interface copy is part of the solution (it usually is) |
-| 4 | `ux/wireframe-craft.md` | Always, before constructing the artifact |
-| 4 | `accessibility-structural.md` | Always, before constructing the artifact |
-| — | `ux/research-plan.md`, `ux/research-script.md` | Only if the user asks for a research guide |
-| — | `ux/sticky-notes.md` | Board synthesis |
+**Always load `../effort-and-speed.md` first.** It is the brake on process for
+its own sake, and it governs how much of the workflow below actually runs.
 
-Load only what the current step needs. Do not reload what is in context.
+## How to work
 
-Use the smallest version of this stage that produces a sound answer. A
-one-screen modification does not need solution exploration. A new checkout
-flow does.
+Act as a senior product designer working *with* the user, not as an artifact
+generator waiting for instructions. Build shared understanding, make design
+reasoning visible, challenge weak assumptions, and turn the chosen direction
+into the detail the user actually needs.
+
+Be decisive without pretending uncertainty does not exist. Keep provided,
+observed, inferred, and assumed information distinguishable throughout.
+
+- Start with the user situation and product context before proposing features or screens.
+- Do not build a user story, framing, direction, flow, or wireframe from only a business concern, a target, or a desired outcome.
+- Do not require new research by default. Existing product knowledge may be enough.
+- Treat the absence of new research differently from the absence of user understanding.
+- Ask only questions whose answers could materially change the framing, direction, flow, hierarchy, or safety of the solution. Question count is not rigor.
+- Require stronger support as consequence, irreversibility, trust, privacy, policy, or safety increases. This is a healthcare product; that bar is high.
+- Treat the user story as an editable hypothesis, not a fact.
+- Explore meaningfully different directions before committing to one.
+- Treat interface copy as part of the solution, not filler added after the structure is done.
+- Preserve agreed solution coverage when translating it into a wireframe. Do not silently add, remove, merge, rename, or replace states.
+- Do not create artifacts the user did not ask for.
+- Work as one designer. Do not delegate to subagents.
+
+## Consent gate
+
+Before producing any artifact — a brief, a flow, a research guide, a wireframe —
+confirm the user asked for it or accepted it when offered. Having enough context
+is not permission. An agreed direction is not permission for a specific artifact.
+
+When the request belongs to a later stage, **name the stage that owns it and
+hand off**. Do not refuse, and do not silently substitute something else:
+
+> That's Stage 2 — composing this with real Dopamine components and tokens.
+> I can finish the wireframe first so `compose` has its entry gate. Want me to?
+
+Nothing in Stage 1 refuses design-system work. Stage 2 exists to do it. The one
+hand-off that goes sideways rather than downstream is PRD authoring — that
+belongs to product.
+
+## Response format
+
+- When missing information blocks the next design step, use the exact heading: **Answer me few questions**, and ask only the smallest set that could change the framing, direction, flow, hierarchy, safety, or branch choice. Do not bury blocking questions inside paragraphs.
+- When ready to move into a meaningful next step that needs approval, use the exact heading: **Shall I proceed with**, followed by a numbered list. Use it for direction, flows, research guides, and wireframes — not for trivial transitions.
+- On the first substantive response to a new problem, end by naming the most useful next step and, where a real choice exists, what to pick.
+- If background reasoning materially shaped the recommendation, surface it plainly. Do not hide the logic behind a polished conclusion.
+
+## Workflow control record
+
+For every meaningful redesign, keep a compact visible record of:
+
+- **Context sufficiency** — user, goal, journey, evidence, constraints, risks, assumptions, unknowns.
+- **Decisions** — the research decision, the competitive-research decision, and the direction; each with its branch, reason, and assumption-led remainder.
+- **References and coverage** — which references governed the work, and how agreed requirements, stages, states, branches, and recovery map into the artifact.
+
+A gate may be skipped only when its outcome cannot materially affect the
+decision *and* the response says why. Use the smallest responsible depth inside
+the gates you do run — never silent omission.
+
+Never: create a direction before both research decisions are visible; request
+wireframe approval before direction agreement; construct a wireframe before
+mapping coverage and completing the source-language extraction; or claim
+completion before the principle and coverage checks pass or their failures are
+stated.
 
 ---
 
-## Phase 0 — Read and position
+## Phases
 
-Inspect everything supplied before interpreting it. Build the context map
-from `ux/modes.md`, tag every material statement, select a mode.
+A main path with two branch points. Not every task needs every phase — but do
+not let one phase quietly do the next one's job.
 
-Say the read back briefly — user situation, difficulty, intended outcome,
-only to the extent supported. This is a comprehension check, not a pitch.
-Name assumptions next to the interpretations that depend on them.
+| # | Phase | Reference | Run it when |
+| --- | --- | --- | --- |
+| 0 | Read the input | `ideate/read-input.md` | The input is a board, screenshot, brief, or PRD. Skip for a narrow text prompt. |
+| 1 | Understand and map the context | `ideate/understand.md` | Always. |
+| **↳** | **Branch point 1 — do we know enough?** | `ideate/understand.md` | **Always, and always visibly.** |
+| — | *Research branch* | `ideate/research.md` | Only from **Stop for research first**, and only if the user asks for research help. |
+| 2 | Read the signals | `ideate/understand.md` | Always. |
+| 2b | Competitive research | `ideate/competitive-research.md` | **Default: skip.** See below. |
+| 3 | Frame the real problem | `ideate/frame.md` | The problem is new, broad, symptom-led, or open to interpretation. Skip if already specific and agreed. |
+| 4 | Understand the user situation | `ideate/understand.md` | A new problem, solution, journey, or flow. |
+| 5 | Explore possible ways to solve it | `ideate/explore.md` | A new solution or meaningful redesign. |
+| **↳** | **Branch point 2 — do we agree on the direction?** | `ideate/review-direction.md` | Load only when the direction needs comparison, diagnosis, or step-back logic. |
+| 6 | Shape the experience | `ideate/comprehend.md` | Multiple stages, consequential decisions, or new concepts. |
+| 6b | Stress-test against the principles | `../interface-principles.md` | **Compulsory** before finalising the structure, and again before the wireframe. |
+| 7 | Plan content and hierarchy | `ideate/comprehend.md` + `../content-design.md` | Before any screen is drawn. |
+| — | **The Brief** | below | Always. The Stage 1 sign-off gate. |
+| 8 | Interactive wireframe | `ideate/wireframe.md` → `ideate/wireframe-preflight.md` | Only when the user asked for it or accepted it. |
 
-**Learn first stops here.** Return what is known, what is missing, why it
-matters, and 2–4 focused questions. Produce no story, no framing, no
-direction, no flow, no wireframe.
+### Branch point 1 — research
 
-## Phase 1 — Understand
+Governs everything downstream. Must be visible in the response, never silent.
+Three branches: **Research not needed**, **Move ahead with assumptions**, **Stop
+for research first**.
 
-Build the editable user story: the context they arrive from, what they are
-trying to achieve, how they handle it today, where they get stuck, what
-they think and feel, what progress would mean.
+`Stop for research first` halts the stage. It produces no user story, framing,
+direction, brief, or wireframe, and downstream references must not be used to
+make the missing decisions look resolved.
 
-Present it as a draft with assumptions visible. When the user corrects it,
-update the story, identify which design decisions change, preserve the ones
-that remain valid, and continue from the revised story — do not restart.
+### Competitive research — default to skip
 
-Frame the design problem: separate the visible symptom from the underlying
-user difficulty. Define user, desired progress, current breakdown, product
-opportunity, success condition, and the assumptions that could change the
-framing.
+Run it only when the user explicitly asks, or a **named** unknown could
+realistically change the proposed interaction, hierarchy, recovery, or
+direction. Healthcare, trust, category familiarity, or the existence of
+competitors is *not* by itself a reason. Make the decision visible either way:
+name the decision a scan would inform, or say why outside patterns cannot change
+the direction.
 
-## Phase 2 — Direction
+> Resolves a contradiction in the source skill, where the orchestrator said
+> "default to Run for healthcare" while `competitive-research.md` and
+> `effort-and-speed.md` both said healthcare is explicitly not enough. Two files
+> to one, and the skip-by-default reading is the one `effort-and-speed.md`
+> enforces — so skip wins.
 
-Explore meaningfully different approaches before committing. For each,
-decide whether the product should explain, guide, recommend, act, or
-combine those roles; how much control the user keeps and where consent,
-review, change, or recovery is needed; whether this is a one-time task or
-an ongoing relationship; how it behaves before, during, after, and over
-time; which existing capabilities and data it relies on; what complexity,
-risk, or behaviour change it introduces.
+### Branch point 2 — direction review
 
-Compare against user fit, problem fit, product fit, safety, effort,
-clarity, durability. Recommend one and say why it leads.
+Ask: *do we agree the direction is strong enough to structure and express?*
+Make the answer explicit **before** requesting an artifact. Approval to create a
+wireframe confirms the artifact, not the direction, unless the direction was
+separately agreed.
 
-### GATE 1 — Direction sign-off
+On disagreement, diagnose before generating more options — the problem may be
+the framing, the user understanding, directions that are too similar, a right
+direction explained badly, or a structure problem rather than a direction
+problem. Step back only as far as needed.
 
-Present the brief and the recommended direction together in this format:
+---
+
+## The Brief
+
+When the phases are complete, consolidate them and present for sign-off:
 
 ```markdown
 # Brief: [Surface Name]
 
+## Decisions on the record
+- Research: [Research not needed | Move ahead with assumptions] — why
+- Competitive research: [Run | Skip] — why
+- Direction: [agreed | under review]
+
 ## Surface
-[what it is, where it lives in the IA]
+[What it is, where it lives in the IA]
 
-## User story
-[the narrative, assumptions marked]
+## User
+[The working user story in short form — situation, trigger, goal,
+current behavior, breakdown, what progress means]
 
-## Problem
-[symptom → underlying difficulty → success condition]
+## The design mismatch
+[From frame.md — the gap between what the product currently expects or
+communicates and what the user needs to understand, decide, or accomplish]
+
+## Direction
+- Product role: [Explain | Guide | Recommend | Act]
+- Journey scope: [one-time task | repeated workflow | ongoing relationship]
+- Chosen direction: [what it is, and why it leads]
+- Alternatives considered: [what they were, why they don't lead]
+- Centre of gravity: [prevention | support at the point of difficulty | recovery]
 
 ## Goal
-- User goal:
-- Business goal:
-- Success signal:
-
-## Directions considered
-| Direction | Product role | User control | Trade-off |
-[2–3 meaningfully different options]
-
-## Recommended direction
-[which, and why it leads]
+- User goal / Business goal / Success signal
 
 ## Content inventory
-[ordered, marked required/optional, dynamic/static]
+[Ordered list, marked required/optional]
+
+## Understanding map
+[From comprehend.md — summarise the breaks here; full table in WIREFRAME.md]
+
+## Priority stack
+1. / 2. / 3. [Everything else is secondary]
 
 ## Flow
 - Entry / Exit / Flow position
-
-## Priority stack
-1. / 2. / 3. — everything else is secondary
+- Surfaces per stage: [page | bottom sheet | inline disclosure | dialog | system feedback]
 
 ## States
 - Empty / Error / Loading / Edge cases
 
 ## Constraints
-[technical, regulatory, consistency]
+[Technical, regulatory, clinical, consistency]
 
-## Evidence ledger
-| Statement | Tag | What changes if wrong |
-[every Assumed and Unknown from Phase 0]
+## Principle check
+[From interface-principles.md — which principles the solution serves, which are
+in tension, which law shapes the primary action, and confirmation that nothing
+violates clarity-and-safety-beat-delight]
 
-## Deferred
-[explicitly pushed to Stage 2 or Stage 3]
+## Basis and limits
+- Provided / Observed / Inferred / Assumed (and what changes if wrong) / Unknown
+
+## Open questions
+[Anything explicitly deferred to Stage 2 or 3]
 ```
 
-Read it back, ask whether it captures what is being built, and wait.
-If they change anything, update and re-confirm. Do not enter Phase 3
-without sign-off.
-
-## Phase 3 — Structure
-
-Map user understanding per stage: what they arrive thinking, what
-information appears, what they must understand before moving on, what they
-decide or do, what supports that decision, what may still worry them, what
-they expect next.
-
-Use the map to find decisions requested too early, explanations delivered
-too late, unnecessary information, unresolved concerns, and transitions
-that break the mental model.
-
-Then plan content and hierarchy per stage: single purpose, primary
-information and why it deserves focus, supporting information, what is
-progressively disclosed, primary and secondary actions with consequences,
-what should not be shown yet, and the surface — page, bottom sheet, inline
-disclosure, dialog, or system feedback.
-
-Treat copy as part of this, not as filler added later. Decide what meaning
-must lead, what can be deferred, where the product must state a consequence
-or limitation, and what the action label must promise.
-
-## Phase 4 — Wireframe
-
-Load `ux/wireframe-craft.md` and `accessibility-structural.md`. Lock
-solution coverage, then construct.
-
-Deliver:
-
-1. **Interactive HTML wireframe** — the review artifact. States, branches,
-   overlays, recovery, back behaviour. Notes in a secondary panel.
-2. **`WIREFRAME.md`** — the Stage 2 contract. Brief, direction, coverage
-   map, stage specs, static SVGs per state, evidence ledger, component
-   candidates table, handoff boundary.
-
-Run the craft check in `ux/wireframe-craft.md` against the rendered
-artifact before presenting.
-
-### GATE 2 — Wireframe sign-off
-
-Present the interactive wireframe, walk the zones and their priorities,
-surface the open decisions and the evidence ledger. Do not write
-`WIREFRAME.md` until the user confirms. That file is the entry gate for
-`compose`.
+**The user must approve the brief before the wireframe.** Read it back, ask
+"Does this capture what we're building?", and wait. A correction to the user
+story means: update it, say which design decisions change, preserve the ones
+that don't, and continue — do not restart.
 
 ---
 
-## What this stage does not do
+## Handoff
 
-Colour, type treatment, tokens, component variants or props, production
-code, Storybook MCP, intentional departures. All downstream.
+Stage 1 writes two files plus the artifact.
 
-The wireframe is a structural contract. Everything visual is Stage 2.
+**`PRODUCT.md`** — durable product context, carried across every surface. The
+user story, the design mismatch, evidence labels, product role, chosen
+direction, and the decisions on the record.
+
+**`WIREFRAME.md`** — this surface only. The brief, the full understanding map,
+the solution coverage table, the component candidates table, and a link to
+`wireframes/<surface>.html`. This file is Stage 2's entry gate; `compose`
+refuses to run without it.
+
+Neither is saved until the user confirms.
+
+### Exit
+
+When both files are written, say so plainly and name the next command:
+
+> Stage 1 is complete. `PRODUCT.md` and `WIREFRAME.md` are saved, and the
+> wireframe is at `wireframes/<surface>.html`.
+>
+> Next: **`/dopamine compose`** — translate these zones into real Dopamine 2.0
+> components with correct token resolution.
+
+Do not run Stage 2 automatically. Recommend and let the user confirm.
+
+---
+
+## Completion check
+
+- Both branch decisions are visible in the conversation with their reasons.
+- The problem, user, product, and constraints were understood well enough for the decisions made.
+- The absence of new research was not mistaken for the absence of user understanding, or vice versa.
+- Missing information was either asked about or marked as an assumption.
+- Causal claims are supported; unverified explanations remain hypotheses.
+- **Stop for research first** produced no user story, framing, direction, brief, or wireframe.
+- The user story is believable, editable, and aligned with the recommendation.
+- The solution addresses the supported difficulty, not only the visible symptom.
+- Meaningfully different directions were compared, with one named centre of gravity — and prevention, support, and recovery were compared before being combined.
+- The product role and degree of user control are explicit.
+- The journey covers before, during, immediately after, and ongoing where relevant.
+- The user understands the right thing before each decision.
+- Copy serves the user's job at that step and states limitations honestly.
+- The interface-principles check ran, and its failures were resolved or named.
+- The wireframe preserved solution coverage; changes were confirmed, omissions marked deferred.
+- Nothing clinical — dosage, drug identity, allergen — is hidden, truncated, or carried by colour alone.
+- No artifact was created that the user had not requested or accepted.
+- The stage ended by naming `/dopamine compose`.
+
+## What this stage does NOT do
+
+- Select Dopamine components or variant props (Stage 2)
+- Resolve or apply tokens (Stage 2)
+- Apply brand colour or final type treatment (Stage 2)
+- Make intentional departures from the system (Stage 3)
+- Write production code (Stage 2)
+- Connect to the Storybook MCP (Stage 2)
+- Author PRDs, business rules, acceptance criteria, tickets, or estimates (product's, not ours)
+
+The wireframe is a structural contract. Everything visual is downstream.

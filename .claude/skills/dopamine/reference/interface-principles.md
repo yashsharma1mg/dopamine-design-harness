@@ -1,16 +1,15 @@
 # Interface principles — Dopamine 2.0
 
-The design-conviction layer of the system. Where `accessibility.md` is the
-legal and clinical floor a surface may not fall below, this file is the
-intent a surface must be built *toward*.
+The design-conviction layer of the system. It defines the intent a surface
+must be built *toward*, with clarity and safety as the non-negotiable floor.
 
 The framework has three layers, and they run top-down:
 
-| Layer         | Answers                                    | Where it lives          |
-| ------------- | ------------------------------------------ | ----------------------- |
-| **Principles** | What is the right *kind* of experience?    | The interface beliefs   |
-| **Laws**       | How should the experience be *designed*?   | The UX on the surface   |
-| **Visual**     | How do we actually *build* the UI?         | Tokens, type, layout    |
+| Layer | Answers | Where it lives |
+| --- | --- | --- |
+| **Principles** | What is the right *kind* of experience? | The interface beliefs |
+| **Laws** | How should the experience be *designed*? | The UX on the surface |
+| **Visual** | How do we actually *build* the UI? | Tokens, type, layout |
 
 Principles set the intent. Laws translate the intent into design rules. The
 visual layer is where the laws become the UI for a screen. Read them in that
@@ -29,10 +28,8 @@ So the framework carries one bias that overrides everything else:
 > **Clarity and safety always beat delight.**
 
 When a principle, a law, and a visual instinct disagree, this is the
-tiebreaker. Stage 3 (polish) is where delight is allowed to push back — and
-even there it never crosses `accessibility.md`.
-
----
+tiebreaker. Stage 3 (polish) is where delight may push back, but it must never
+reduce clarity, safety, legibility, or user control.
 
 ## The six principles
 
@@ -50,10 +47,10 @@ doctor."). A user who understands can catch a mistake the system misses.
 **Evaluation question:** Can the user understand *why*, in plain words — and
 does it also say what it cannot do?
 
-| We do                                                        | We don't                                          |
-| ------------------------------------------------------------ | ------------------------------------------------- |
+| We do | We don't |
+| --- | --- |
 | Label *why* a product is recommended (same salt, strength, form, use case) | Offer an unexplained "recommended for you" medicine |
-| Name the source or credential behind advice                  | Treat the user's trust in the system as unshakeable |
+| Name the source or credential behind advice | Treat the user's trust in the system as unshakeable |
 
 ### 2. Calm over alarm
 
@@ -66,11 +63,11 @@ it is *how* hard truths are shared, not *whether* they are shared.
 **Evaluation question:** Does this help the user feel calm and know what to
 do? Or does it create worry just to make them act?
 
-| We do                                             | We don't                                        |
-| ------------------------------------------------- | ----------------------------------------------- |
+| We do | We don't |
+| --- | --- |
 | Frame a flagged result neutrally with a clear next step | Paint minor deviations in alarming language and colour |
-| Reassure while still surfacing warnings           | Fabricate stock or time scarcity to drive conversion |
-| Use urgency only when it is clinically real       |                                                 |
+| Reassure while still surfacing warnings | Fabricate stock or time scarcity to drive conversion |
+| Use urgency only when it is clinically real | |
 
 ### 3. Context aware
 
@@ -84,10 +81,10 @@ highlight. It must never change the facts themselves.
 **Evaluation question:** Does this notice who the user is and how they feel?
 Or does it treat everyone like the same generic user?
 
-| We do                                                 | We don't                                      |
-| ----------------------------------------------------- | --------------------------------------------- |
+| We do | We don't |
+| --- | --- |
 | Adjust emphasis and ordering to the user's role and state | Show a returning chronic patient the same generic homepage as a first-time visitor |
-|                                                       | Ask again for information the user already gave us |
+| | Ask again for information the user already gave us |
 
 ### 4. Answer first
 
@@ -111,10 +108,10 @@ Anything the user needs to act safely counts as essential and stays in view.
 with an honest path to full detail — and checked that nothing safety- or
 clarity-critical is hidden?
 
-| We do                                              | We don't                                          |
-| -------------------------------------------------- | ------------------------------------------------- |
+| We do | We don't |
+| --- | --- |
 | Let the user expand details and references on demand | Use disclosure to bury something essential the user needs before deciding |
-|                                                    | Force every unessential detail on every user at every step |
+| | Force every unessential detail on every user at every step |
 
 ### 6. Participation creates ownership
 
@@ -127,18 +124,13 @@ never a sneaky trick like guilt-tripping or confirm-shaming.
 **Evaluation question:** Does the user really make and confirm the choices
 that matter to them? Are those choices honest?
 
----
-
 ## The five laws
 
 Laws translate the principles into concrete design rules. Each law serves
 specific principles and is a summation of established usability heuristics.
 
-Two of these are non-negotiable in this harness and appear elsewhere as
-hard gates: **always follow the design system** (the token architecture and
-component library — enforced by Stage 2) and **always adhere to our
-accessibility practices** (`accessibility.md` — the hard floor). The five
-laws below are the *design-judgment* laws layered on top of those two gates.
+The design system remains a non-negotiable implementation constraint when it
+is available. The five laws below govern the design judgment layered on top.
 
 ### Law 1 — Make the next action obvious
 *Serves: Context aware · Answer first · Calm over alarm*
@@ -202,34 +194,49 @@ Balance aesthetics so the surface never becomes overwhelming.
 *Summation of:* Aesthetic-usability effect, the 60-30-10 colour-balance rule,
 the Doherty threshold (interaction under ~400ms so neither side waits), Flow.
 
----
-
 ## The visual layer
 
 Where the laws become UI. These are the system parts a composed surface is
-built from; specific token values, contrast rules, and type floors are
-governed by the Dopamine 2.0 token system and `accessibility.md`.
+built from; use the available Dopamine 2.0 tokens and product constraints.
 
-| # | System part    | Sub-parts                                                     |
-| - | -------------- | ------------------------------------------------------------ |
-| 1 | Visual assets  | Illustrations · Micro-illustrations · Iconography            |
-| 2 | UI (Layout)    | Whitespace · Boundary · Container                            |
-| 3 | Colour         | Brand colour · Gray colours · System colours · Expressive colours |
-| 4 | Type           | Functional (Figtree) · Expressive (Figtree)                  |
+| # | System part | Sub-parts |
+| --- | --- | --- |
+| 1 | Visual assets | Illustrations · Micro-illustrations · Iconography |
+| 2 | UI (Layout) | Whitespace · Boundary · Container |
+| 3 | Colour | Brand colour · Gray colours · System colours · Expressive colours |
+| 4 | Type | Functional (Figtree) · Expressive (Cabinet Grotesk, display only, ≥24pt) |
 
 Type role hierarchy (largest to smallest): **Page titles → Heading → Title →
 Body → Sub text.** Functional type carries information; expressive type
-carries personality. Neither may cross the size and contrast floors in
-`accessibility.md`.
+carries personality. Both must preserve legibility and clear hierarchy.
 
----
+Cabinet Grotesk is display-only and never set below 24pt — that floor is
+accessibility, not preference, and it is on the Stage 3 hard floor. Every other
+role is Figtree.
 
-## Using this file in Stage 2
+## How to use this file in the harness
 
-Every composed zone is checked twice: once against its principle (does this
-zone serve trust, calm, context, answer-first, disclosure, ownership?) and
-once against the laws (is the next action obvious, are mistakes prevented and
-recoverable, is it consistent, is the cognitive load low, is it aesthetically
-resolved?). When the checks conflict, apply the overriding bias: **clarity and
-safety beat delight.** The accessibility floor is checked separately and is
-never a judgment call — see `accessibility.md`.
+This layer spans stages. Load it as a **compulsory evaluation layer** at:
+
+- **Stage 1**, before finalising the journey structure (Phase 4b) and again
+  before the wireframe — stress-test the action ranking, explanations, and
+  recovery logic.
+- **Stage 3**, as the vocabulary for the polish audit. Law 5 is what "does this
+  feel like 1mg" means concretely, and the overriding bias is the same
+  conviction `polish.md` calls the hard floor.
+
+Do not use the principles to replace problem understanding or force a
+pre-decided answer. Use them to stress-test the proposed solution after the
+core design reasoning is already formed.
+
+Do not use the principles to replace problem understanding or force a
+pre-decided answer. Use them to stress-test the proposed solution after the
+core design reasoning is already formed.
+
+When applied, explicitly check:
+
+1. Which principle(s) the solution is serving most directly.
+2. Which principle(s) are in tension.
+3. Which law is shaping the most important action, hierarchy, or recovery.
+4. Whether anything violates the overriding bias: **clarity and safety beat delight.**
+5. What should change before the solution is considered strong enough to share.

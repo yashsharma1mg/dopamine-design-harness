@@ -2,24 +2,32 @@
 name: dopamine
 description: >
   Use when the user wants to design, build, compose, audit, or polish a
-  mobile-first interface using the Dopamine 2.0 design system. Covers
-  problem framing, user stories, solution direction, journeys, flows,
-  information architecture, interface content, interactive low-fidelity
-  wireframing, component composition from the governed token-backed
-  library, and visual polish. Handles page flows, cart surfaces, PDP,
-  navigation, forms, feedback patterns, health indicators, and pharmacy
-  commerce UI for the 1mg product family. Also use when reviewing existing
-  surfaces against Dopamine 2.0 compliance, extracting component usage from
-  Figma specs, or proposing intentional departures from the system for
-  visual distinction.
+  mobile-first interface using the Dopamine 2.0 design system. Covers UX
+  problem framing, user stories, research planning, solution direction,
+  journeys and flows, information hierarchy, interface copy, wireframing,
+  component composition from the governed token-backed library, and visual
+  polish. Handles page flows, cart surfaces, PDP, navigation, forms, feedback
+  patterns, health indicators, and pharmacy commerce UI for the 1mg product
+  family. Also use when reading a Figma or FigJam board, a screenshot, or a
+  product brief or PRD as design input; when critiquing a screen or flow;
+  when reviewing existing surfaces against Dopamine 2.0 compliance;
+  extracting component usage from Figma specs; or proposing intentional
+  departures from the system for visual distinction.
   Not for backend-only, API-only, or non-UI tasks.
 argument-hint: "[ideate | compose | polish] [target]"
 user-invocable: true
 allowed-tools:
-  - Bash(node *)
   - Read
   - Write
-  - MCP(storybook-*)
+  - Edit
+  - Bash(node *)
+  # Dopamine 2.0 design system over MCP — Stage 2 component APIs, tokens, variants.
+  # Server name must be literal; `mcp__` rules cannot use parentheses or glob the server.
+  - mcp__dopamine2-remote__*
+  # Stage 1 Phase 0 mandates visually inspecting supplied Figma/FigJam frames.
+  - mcp__plugin_figma_figma__*
+  # Stage 1 Phase 8 mandates one rendered verification of the HTML wireframe.
+  - mcp__claude-in-chrome__*
 license: Internal — Dopamine 2.0 design system
 ---
 
@@ -39,11 +47,9 @@ You MUST do these steps before proceeding:
 2. **If the user invoked a stage command** (`ideate`, `compose`, `polish`),
    you MUST read `reference/<command>.md` next. Non-optional. The reference
    defines the stage's protocol; without it you will skip steps.
-
-   For `ideate`, you MUST also read `reference/ux/modes.md` before asking
-   the user anything. It sets evidence tagging and mode selection, and it
-   governs which of the `reference/ux/*` files load and when. Stage 1 is an
-   orchestrator over that folder — do not run it from `ideate.md` alone.
+   For `ideate`, also load `reference/effort-and-speed.md` — it governs how
+   much of the stage actually runs. Load the `reference/ideate/*` phase files
+   lazily, only as each phase is reached.
 
 3. **Familiarise yourself with the existing codebase.** Read at least one
    project file (token JSON, CSS variables, a representative component or
@@ -51,11 +57,12 @@ You MUST do these steps before proceeding:
    is valid.
 
 4. **Check stage prerequisites.** Each stage has an entry gate:
-   - `ideate` — always valid; this is the starting point.
+   - `ideate` — always valid; this is the starting point. Accepts a text
+     prompt, a Figma or FigJam board, a screenshot, or a product brief /
+     PRD as input.
    - `compose` — requires a completed wireframe artifact from Stage 1
      (a `WIREFRAME.md` or equivalent checked into the project).
-     The Storybook MCP connection must be available. Stage 2 loads both
-     `reference/interface-principles.md` and `reference/accessibility.md`.
+     The Dopamine MCP must be reachable — verify with `list_components`.
    - `polish` — requires a composed surface from Stage 2 with all
      components rendering correctly against the token system, and
      all accessibility constraints from `reference/accessibility.md`
@@ -100,15 +107,23 @@ Cart: CouponWidget, SavingStrip, AmountWidget, CarePlanCard, OrderStrip,
 All components import from `@dopamine2.0/ui` and use typed props that
 mirror Figma variant names (type / state / size / style).
 
+### Interface principles
+
+The design-conviction layer sits in `reference/interface-principles.md`: six
+ranked principles (trust through explainability, calm over alarm, context aware,
+answer first, progressively disclose, participation creates ownership) and five
+laws that translate them into design rules. One bias overrides everything:
+
+> **Clarity and safety always beat delight.**
+
+Compulsory in Stage 1 before the structure is final; the audit vocabulary for
+Stage 3. A visual decision that cannot trace back up to a law and a principle is
+decoration, not design.
+
 ### Accessibility (WCAG 2.2 AA · IS 17802 · RPwD Act 2016)
 
 Accessibility is legally binding in India (Article 21, SC Apr 2025).
-Split across two references:
-- `reference/accessibility-structural.md` — layout-level constraints
-  (touch targets, truncation, text scaling, state enumeration, recovery).
-  Loaded by Stage 1 before wireframe construction.
-- `reference/accessibility.md` — visual and token constraints (contrast
-  ratios, failing tokens, font families, motion). Loaded by Stage 2.
+Full reference at `reference/accessibility.md`, loaded by Stage 2.
 
 Critical constraints that affect all stages:
 - Three tokens fail WCAG on white: Content/Tertiary (3.29:1),
@@ -116,35 +131,31 @@ Critical constraints that affect all stages:
 - Drug names, dosages, allergens: NEVER truncate. Wrap, never ellipsis.
 - Touch: 48dp default, ≥48+12dp for high-stakes (OTP, payment, dosage).
 - Cabinet Grotesk only at ≥24pt.
-- Seven states per interactive element: default, hover, focus, pressed,
-  loading, disabled, selected.
-
-### Interface principles (the design-conviction layer)
-
-The system's intent layer: three tiers — Principles (what kind of
-experience), Laws (how it's designed), Visual (how it's built) — under one
-overriding bias: **clarity and safety always beat delight.** Full reference
-at `reference/interface-principles.md`, loaded alongside accessibility by
-Stage 2.
-
-Six principles (ranked): Trust through explainability · Calm over alarm ·
-Context aware · Answer first · Progressively disclose · Participation creates
-ownership. Five laws: next action obvious · assume mistakes · consistency over
-creativity · low cognitive load · aesthetics aid usability.
+- Six applicable states per interactive element: default, hover, pressed,
+  loading, disabled, selected. **Focus is not applicable** — Dopamine 2.0
+  components are mobile UI and carry no focus-ring styling by design. State
+  this whenever the accessibility pass runs; never flag it as a defect.
 
 ## Commands
 
 | Command            | Stage | Description                                          | Reference              |
 | ------------------ | ----- | ---------------------------------------------------- | ---------------------- |
-| `ideate [target]`  | 1     | Understand, choose a direction, structure, wireframe | reference/ideate.md + reference/ux/ |
+| `ideate [target]`  | 1     | Understand, frame, choose a direction, then wireframe | reference/ideate.md    |
 | `compose [target]` | 2     | Build with real components and design principles     | reference/compose.md   |
 | `polish [target]`  | 3     | Propose intentional departures for visual distinction | reference/polish.md   |
 
 ### Routing rules
 
-1. **No argument**: check the project state. If no PRODUCT.md exists,
-   recommend `ideate`. If wireframes exist but no composed surface,
-   recommend `compose`. If a composed surface exists, recommend `polish`.
+1. **No argument**: check the project state and recommend the next step.
+   Stage 1 is long enough to be interrupted part-way, so check in this order:
+   - No `PRODUCT.md` → recommend `ideate` (start from the beginning).
+   - `PRODUCT.md` but no `WIREFRAME.md` → Stage 1 was interrupted after the
+     understanding work. Recommend resuming `ideate`, and say which phase it
+     left off at — read `PRODUCT.md` to find out. Do not restart the
+     interrogation from scratch.
+   - `WIREFRAME.md` but no composed surface → recommend `compose`.
+   - A composed surface exists → recommend `polish`.
+
    Never auto-run a stage; recommend and let the user confirm.
 
 2. **First word matches a stage command**: check the entry gate, then load

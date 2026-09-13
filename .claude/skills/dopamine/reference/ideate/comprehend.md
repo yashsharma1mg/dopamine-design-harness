@@ -1,9 +1,5 @@
----
-name: user-understanding
-description: Map what the user thinks, sees, understands, decides, and still worries about at each stage of an experience.
----
+# Stage 1 · Phase 4 — Map user understanding
 
-# User Understanding
 
 ## Purpose
 

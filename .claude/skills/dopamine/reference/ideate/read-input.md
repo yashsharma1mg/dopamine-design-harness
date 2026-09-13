@@ -1,9 +1,65 @@
----
-name: read-prd
-description: Read a product brief or PRD and translate its relevant content into design understanding, constraints, implications, and open questions without taking ownership of the authoritative product requirements.
+# Stage 1 · Phase 0 — Read the input
+
+Route by input type:
+
+- Figma board, FigJam board, screenshot, or multi-frame visual → **Read the board**, below.
+- Product brief or PRD → **Read a product brief or PRD**, below.
+- A narrow text prompt or single screen → inspect it directly; skip this phase.
+
 ---
 
-# Read a Product Brief or PRD
+
+## What this step is for
+
+Before you can help, you need to understand what you're looking at. Boards are messy — frames, sticky notes, arrows, half-finished flows, annotations from three different people. Read all of it and make sense of it before you do anything else.
+
+## What to look at
+
+Go through everything on the board: selected frames and their order, frame names and labels, screenshots and UI states, flow arrows and connectors, sticky notes and annotations, highlighted areas and callouts, the designer's prompt and recent conversation.
+
+## How to think through it
+
+1. **What type of thing is this?** — An app screen, a user flow, a concept sketch, a critique, a research synthesis, a planning board, or a mix?
+2. **What part of the product is this about?** — Name the feature area.
+3. **What's the story?** — Who's using this, what are they trying to do, what happened before this moment, what happens after, where does the flow feel uncertain?
+4. **What's missing?** — No user type? No business goal? No entry point? No success state? Conflicting annotations?
+
+## What the output looks like
+
+```markdown
+## Board Understanding
+
+**What this appears to show**
+...
+
+**Likely user goal**
+...
+
+**Flow or state shown**
+...
+
+**Important notes and annotations**
+...
+
+**Visible friction**
+...
+
+**Assumptions**
+...
+
+**Unclear points**
+...
+```
+
+## Ground rules
+
+- Don't solve yet. Just understand.
+- Don't invent product context without marking it as an assumption.
+- Treat annotations as first-class context — someone put those there for a reason.
+- If the selected content is too sparse to work with, say what's missing.
+
+---
+
 
 ## Purpose
 
@@ -48,13 +104,13 @@ Do not turn a proposal or assumption into a requirement through confident wordin
 
 A complete PRD is not proof that the user problem is understood, and the absence of new research does not mean the understanding is insufficient. Judge the material by what it establishes, not by the document type.
 
-Use the same response modes as the main workflow:
+Use the same research decision as the main workflow:
 
-- **Move forward:** the document and supporting material establish the user, situation, current behavior, breakdown, and constraints well enough for the requested decision.
-- **Move carefully:** the main direction is supported, but a named gap affects detail or confidence. Carry only assumptions whose consequence is limited and reversible.
-- **Learn first:** core user context or cause is unknown, different plausible answers would change the direction, or the consequence requires stronger support.
+- **Research not needed for this step:** the document and supporting material establish the user, situation, current behavior, breakdown, and constraints well enough for the requested decision.
+- **Move ahead with assumptions:** the main direction is supported, but a named gap affects detail or confidence. Carry only assumptions whose consequence is limited and reversible.
+- **Stop for research first:** core user context or cause is unknown, different plausible answers would change the direction, or the consequence requires stronger support.
 
-In **Learn first**, do not turn a business goal, metric, proposal, or requested feature into a user story or design problem. Return the known inputs, blocking gaps, questions by owner, and the smallest useful learning recommendation when existing sources cannot answer them.
+In **Stop for research first**, do not turn a business goal, metric, proposal, or requested feature into a user story or design problem. Return the known inputs, blocking gaps, questions by owner, and the smallest useful learning recommendation when existing sources cannot answer them.
 
 ## 4. Build the design understanding
 
@@ -93,9 +149,9 @@ Check whether the supplied user story explains:
 - The consequence of failure
 - The successful end state
 
-If the user story is missing or incomplete but the rest of the supplied material supports its central sequence, use `user-story.md` to draft an editable design hypothesis in **Move forward** or **Move carefully**. Do not present the draft as a confirmed product requirement.
+If the user story is missing or incomplete but the rest of the supplied material supports its central sequence, use the user-story section of `understand.md` to draft an editable design hypothesis in **Research not needed** or **Move ahead with assumptions**. Do not present the draft as a confirmed product requirement.
 
-If its user, situation, current behavior, and breakdown would mostly be assumed, select **Learn first** and return the gaps instead of drafting the story.
+If its user, situation, current behavior, and breakdown would mostly be assumed, select **Stop for research first** and return the gaps instead of drafting the story.
 
 ## 7. Identify design-blocking gaps
 
@@ -155,11 +211,13 @@ Decline the PRD-authoring portion of the request. Do not create, complete, restr
 
 Say:
 
-> Writing or editing a PRD is outside my scope.
+> The PRD itself belongs to product — I'd be writing over their decisions rather than designing against them.
 >
-> I can read an existing PRD as design context or help with the user story, UX problem, journey, flow, information hierarchy, interface content, interactive low-fidelity wireframe, and open design questions.
+> What I can do is read the existing PRD as design context, or take the UX side: the user story, the design mismatch, the journey and flow, information hierarchy, interface copy, an interactive wireframe, and the open design questions to send back to product.
 >
 > Would you like help with one of those instead?
+
+This is the one hand-off that goes sideways rather than downstream. Stage 2 and Stage 3 are ours; the PRD is not.
 
 Stop after asking. Do not automatically create a UX foundation, wireframe, or other alternative unless the user explicitly requests or accepts it.
 
@@ -193,7 +251,7 @@ Only questions whose answers could change the design.
 
 ### Recommended design response
 
-The selected response mode and the appropriate next design activity or artifact, without creating additional deliverables unless requested. In **Learn first**, recommend understanding work rather than a solution artifact.
+The research decision and the appropriate next design activity or artifact, without creating additional deliverables unless requested. In **Stop for research first**, recommend understanding work rather than a solution artifact.
 
 ## Completion check
 
@@ -201,10 +259,10 @@ The selected response mode and the appropriate next design activity or artifact,
 - Confirmed decisions are separated from proposals and assumptions.
 - Product language was translated into design implications rather than copied into screens.
 - Missing product decisions were not silently invented.
-- The response mode reflects the quality of user understanding and the consequence of being wrong.
+- The research decision reflects the quality of user understanding and the consequence of being wrong.
 - Existing understanding was considered before recommending new research.
 - User-story gaps are visible.
 - Design-blocking questions name their owner and consequence.
-- **Learn first** did not produce a user story, problem articulation, solution direction, flow, or wireframe.
+- **Stop for research first** did not produce a user story, problem articulation, solution direction, flow, or wireframe.
 - The output does not write, edit, or imitate a PRD or another function's deliverable.
 - The output stays within design responsibility.
