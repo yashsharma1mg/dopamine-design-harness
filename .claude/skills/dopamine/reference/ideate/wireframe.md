@@ -319,10 +319,12 @@ design-to-code output. Those belong to Stage 2 and Stage 3.
 | --- | --- | --- |
 | Surface fills | [flat / gradient — name the direction and both stops] | ... |
 | Accent hue | [the hue carrying status, and where it appears] | ... |
+| Tinted surfaces | [which surfaces are tinted rather than white or grey — for each, the **palette family** it reads as and the **stop** (95/97/99), plus the meaning it carries] | ... |
 | Container geometry | [radius character, card vs full-bleed, separator style] | ... |
 | Icon chips | [shape, size, radius, background treatment] | ... |
-| Icon tinting | [uniform, or per-meaning — say which meanings map to which] | ... |
+| Icon tinting | [uniform, or per-meaning — say which meanings map to which, naming the family and stop for each] | ... |
 | Imagery | [photographic / illustrated / glyph, and at what size and radius] | ... |
+| Container idiom | [the page's own construct: geometry, padding, border behaviour — what a new element must resemble to read as native rather than bolted on] | ... |
 | Density and rhythm | [padding, gaps, where the page breathes vs tightens] | ... |
 | Action placement | [where primary and secondary actions sit] | ... |
 | Typographic hierarchy | [what is largest, what carries weight, what recedes] | ... |

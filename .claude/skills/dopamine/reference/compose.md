@@ -117,6 +117,19 @@ For every zone in the coverage table:
 
 Output a resolved mapping: zone → component → variant → why.
 
+**"Custom" in the Stage 1 candidates table is a red flag, not a licence.**
+Stage 1 wrote those candidates without the MCP; a "Custom card" entry means
+*nobody looked yet*. Run `search_components` on the zone's intent before
+accepting it. A run once hand-rolled a `<div>` for an add-a-test nudge while
+`ActionCard` — whose own docs list "test recommendation card" and "labs cross
+sell", and whose `tone` prop supplies the tinted surface — sat unused.
+
+Watch for the components that read as layout rather than UI, because those are
+the ones that get missed: **ActionCard** (any nudge or cross-sell),
+**StatusCard** (order status), **HealthInsights** (HIH readings), **EventBanner**,
+**Sticky**, **CarePlanCard**. If the zone is "a card that pushes the user toward
+something", it is almost certainly ActionCard.
+
 **If a zone maps to no component**, say so explicitly. Do not approximate with
 a component that nearly fits and then override its styling — that is the single
 most common way a design system gets quietly abandoned. Options, in order:
@@ -152,6 +165,20 @@ Naming, confirmed from the live token set:
 - Spacing, radius, type and shadow are top-level — `--space-16`, `--radius-8`, `--font-size-body-14`, `--shadow-level-2`.
 - The brand role is `branding.1mg`; the raw value is `base.color.brand.coral` (`#ff5443`). Inline CTA text has its own role, `content.cta`.
 
+**Tinted surfaces come from the expressive palettes.** `semantic.color.background.*`
+is cool-neutral only, so a status band, callout, or intervention that needs to
+read as *meaningful* rather than *inert* takes its tint from the base expressive
+family whose meaning matches — sunrise-glow, wellness-green, precision-blue,
+vital-red, sunshine-yellow, comfort-pink, healing-mauve, corporate-horizon-blue.
+
+Use the **95 / 97 / 99** stops: `<family>.99` as the fill with `<family>.95` as
+the border is the house construct. This is the one sanctioned exception to
+"never reference base directly" — name the family, the stop, and the meaning in
+the surface report.
+
+A meaningful surface rendered in `background.subtle` grey is a defect, not a
+neutral choice. Grey says *inert*; these surfaces are not inert.
+
 **Resolve the Stage 1 type roles now.** The wireframe annotated text by role —
 Page title → Heading → Title → Body → Sub text — precisely because Stage 1 had
 no tokens. Map each to its real `--font-size-*` token via `get_tokens`. Do not
@@ -177,6 +204,20 @@ Walk the extraction row by row and restore each property with real tokens:
 | Per-meaning icon tinting | The per-meaning tints. Collapsing them to one uniform grey destroys the signal the source was carrying. |
 | Imagery | Real images where the source had real images. Substituting a glyph for a photograph changes what the row communicates. |
 | Density, action placement, hierarchy | The recorded rhythm, not a default. |
+| Container idiom | The page's own construct, re-voiced — see below. |
+
+**Re-voice the existing construct; do not invent one.** When the surface adds
+something new to an existing page, the new element should extend the page's own
+container language — same geometry, same padding logic, same border behaviour —
+shifted to the expressive family that carries its meaning. A page whose status
+band is a tinted borderless surface gets an intervention that is *also* a tinted
+surface, in a different family. It then reads as a sibling.
+
+Inventing a container idiom is the fallback, and imported web conventions are
+the worst version of it. A left-accent stripe on grey, a dashed outline, a
+coloured top bar — these are alert patterns from other systems. They mark the
+new element as foreign to the page, which is the opposite of what an
+intervention needs.
 
 The test: **put the composed surface next to the source screenshot.** If a
 reviewer can tell which is which by anything other than the new intervention,
@@ -293,6 +334,18 @@ Stage 3, and the whole list runs:
 
 **4 · Principles.** The surface still serves what the Stage 1 brief said it
 would. Drift here is a compose defect, not a polish opportunity.
+
+**5 · Does the surface answer its own brief?** Read the design mismatch from
+`PRODUCT.md`, then find the thing on screen that resolves it. Name it.
+
+If the mismatch is *"the transit window is real, actionable time the product
+doesn't expose"*, then time must be visible — remaining, a closing point, a
+sense of it running out. A surface that states the insight in its brief and
+does not show it on screen has not solved the problem it was built for, however
+correct its tokens are.
+
+This check catches the failure no other check can: a surface that is
+technically flawless and answers a different question than the one asked.
 
 Use `preview_component` to see a component rendered when the prop contract is
 ambiguous, rather than guessing and verifying later.

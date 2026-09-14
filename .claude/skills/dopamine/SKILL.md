@@ -91,18 +91,63 @@ Key constraints:
 - Radii: 0, 2, 4, 6, 8, 12, 16.
 - Brand colour: coral #ff5443 (token.base.color.brand.coral).
 
-### Component library (35 ready)
+### Expressive palettes — the tinted-surface vocabulary
+
+Beyond cool-neutral, the base layer carries eight expressive families:
+**sunrise-glow, wellness-green, precision-blue, vital-red, sunshine-yellow,
+comfort-pink, healing-mauve, corporate-horizon-blue.**
+
+Their **95 / 97 / 99 stops are the tinted-surface language** — the faint washes
+that make a status band, a callout, or an intervention read as a *surface with
+meaning* rather than a grey box. A tint at 99 with its own family at 95 as the
+border is the house construct (e.g. `sunrise-glow.99` fill + `sunrise-glow.95`
+border for a warm, brand-adjacent active surface).
+
+**The semantic layer has no roles for these.** `semantic.color.background.*` is
+cool-neutral only. So a tinted surface is the one sanctioned case for reaching
+into a base expressive palette directly — take the tint from the family whose
+meaning matches, and say why in the surface report. Everything else still
+resolves through semantic.
+
+Meaning already mapped: success/offer → wellness-green.40, error →
+vital-red.40, warning → sunshine-yellow.50, rapid → healing-mauve.50,
+corporate → corporate-horizon-blue.30. Health-in-Hand severity has its own
+scale (`semantic.color.hih.*`) from wellness-green through vital-red.
+
+### Component library — 38 ready
+
+**`list_components` is authoritative. This list is a convenience and it goes
+stale.** It was wrong once already: it said 35 and omitted StatusCard,
+ActionCard and HealthInsights — the three that mattered most for a labs nudge —
+so a run hand-rolled a `<div>` for a job a component already did. Never conclude
+"no component exists" from this list. Conclude it from `search_components`.
 
 Actions: Button, Stepper, FloatingActionButton, ActionBar
 Navigation: PageHeader, SearchBar, Navigation, HorizontalTabs, VerticalTabs,
   SwipeIndicator, QuickLinks
 Forms: InputField, Toggle, Checkbox, Radio
 Selection: SuggestionChip, QuantitySelector
-Display: EventBanner, Tag, Product, ProductLabel, Offer,
-  ProductInformation
+Display: **StatusCard**, **ActionCard**, **HealthInsights**, EventBanner, Tag,
+  Product, ProductLabel, Offer, ProductInformation
 Feedback: Sticky, Snackbar, Tooltip, Bottomsheet, Dialog
 Cart: CouponWidget, SavingStrip, AmountWidget, CarePlanCard, OrderStrip,
   AddToCartPill, PackOfMultiples
+
+**The three that get missed**, because they sound like layout rather than
+components:
+
+- **ActionCard** — the nudge and cross-sell widget. Its own docs name
+  "test recommendation card" and "labs cross sell". `tone` is a prop
+  (`neutral | peach | mauve | blue`), so the tinted surface comes for free, and
+  its Don't list says: *do not build a separate cross-sell component.*
+- **StatusCard** — the order-status widget: a tinted parent card holding white
+  child cards.
+- **HealthInsights** — the HIH widget: patient tabs over insight cards with
+  tags, readings and CTAs.
+
+If a surface needs "a card that nudges the user toward something", that is
+ActionCard. Reaching for a custom div there is the most common way this system
+gets bypassed.
 
 All components import from `@dopamine2.0/ui` and use typed props that
 mirror Figma variant names (type / state / size / style).

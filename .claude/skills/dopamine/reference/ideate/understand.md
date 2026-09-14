@@ -38,7 +38,7 @@ the constraint list, not footnotes.
 - **Provided** — supplied directly by the user or source material.
 - **Observed** — visible in an artifact, flow, behavior, or data.
 - **Inferred** — an interpretation supported by what is provided or observed.
-- **Assumed** — needed to move forward without support; say what changes if it is wrong.
+- **Assumed** — needed to move forward without support; say what changes if it is wrong. **If it could be false, it is a state to design** — see below.
 - **Unknown** — not answered by the available material.
 - **Hypothesis** — a possible explanation that still needs examining.
 
@@ -47,6 +47,26 @@ observed, and **suggests** an inference. An unsupported explanation is named an
 assumption or a hypothesis. Say what is unknown when the cause is not
 established. Do not write "users want", "users are confused", or "the reason is"
 unless the support justifies it.
+
+### An assumption that could be false is a state to design
+
+Labelling something **Assumed** does not discharge it. If the design behaves
+differently when the assumption is wrong, that difference is a state the surface
+owes the user — it belongs in the coverage table, not in a footnote.
+
+*"Assumed: all common tests are compatible with the collected sample"* means
+some are not. The user who picks an incompatible one needs to know **before they
+pay**, and needs a path: a second visit, a re-collection, or a refusal with a
+reason. Noting the assumption and building only the happy path strands that user
+at the exact moment the product promised to help.
+
+The test: **if this assumption is wrong, what does the user see?**
+
+- "Nothing — it just doesn't work" → design the branch.
+- "Nothing changes" → the assumption was never load-bearing. Say so, move on.
+
+Raise the bar with consequence. Here a wrong assumption about a sample, a
+dosage, or an eligibility rule costs a visit, a delay, or a misreading.
 
 ### Summarise context sufficiency
 

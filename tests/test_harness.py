@@ -379,6 +379,51 @@ def test_compose_restores_the_source_language():
     check("compose verifies source fidelity", "Source fidelity" in compose)
 
 
+def test_expressive_palettes_are_documented():
+    """A run rendered a meaningful surface in grey because the harness never
+    told it the tinted-surface vocabulary existed."""
+    skill = C[SKILL / "SKILL.md"]
+    compose = C[REF / "compose.md"]
+    for fam in ("sunrise-glow", "wellness-green", "precision-blue"):
+        check(f"expressive family documented: {fam}", fam in skill)
+    check("tint stops documented", "95 / 97 / 99" in skill or "95/97/99" in skill)
+    check("compose knows tints come from expressive palettes",
+          "Tinted surfaces come from the expressive palettes" in compose)
+    check("semantic gap is stated",
+          "no roles for these" in skill.lower() or "cool-neutral only" in compose.lower())
+
+
+def test_component_inventory_defers_to_the_mcp():
+    """SKILL.md's list said 35 and omitted StatusCard/ActionCard/HealthInsights."""
+    skill = C[SKILL / "SKILL.md"]
+    for comp in ("StatusCard", "ActionCard", "HealthInsights"):
+        check(f"{comp} in the inventory", comp in skill)
+    check("inventory defers to list_components",
+          "list_components` is authoritative" in skill or "list_components is authoritative" in skill)
+    check("inventory warns it goes stale", "goes\nstale" in skill or "goes stale" in skill)
+    compose = C[REF / "compose.md"]
+    check("compose treats Custom as a red flag", "red flag, not a licence" in compose)
+
+
+def test_surface_must_answer_its_own_brief():
+    compose = C[REF / "compose.md"]
+    check("compose checks the mismatch is visible",
+          "Does the surface answer its own brief" in compose)
+    check("re-voicing the construct is the default",
+          "Re-voice the existing construct" in compose)
+
+
+def test_risky_assumptions_become_designed_states():
+    u = C[REF / "ideate" / "understand.md"]
+    check("assumption rule present", "state to design" in u)
+    check("assumption rule gives the test",
+          "what does the user see" in u)
+    wf = C[REF / "ideate" / "wireframe.md"]
+    check("extraction captures tint family and stop",
+          "palette family" in wf and "95/97/99" in wf)
+    check("extraction captures the container idiom", "Container idiom" in wf)
+
+
 def test_compose_establishes_a_host_project():
     """"The deliverable is TSX" is empty without somewhere to put it.
 
