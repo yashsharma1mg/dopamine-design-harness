@@ -7,12 +7,24 @@ memorable. It does not fix problems — that is Stage 2's job.
 ## Entry gate
 
 Requires a composed surface from Stage 2 where:
+- The surface is built from **real `@dopamine2.0/ui` components**, not
+  hand-written CSS approximating them. Check the Stage 2 report's
+  **Artifact format** line. If it says **MOCK**, stop — there is nothing here
+  to polish.
+- The Stage 2 **Source fidelity** check passed, or its gaps are named. Polish
+  cannot restore a gradient the compose step dropped; that is a Stage 2 defect.
 - All components render correctly against the token system.
 - Accessibility constraints from `reference/accessibility.md` pass.
 - No broken layouts, missing states, or unresolved tokens.
 
 If any of these fail, send the user back to `compose`. Polish on a
 broken foundation produces polished garbage.
+
+**Polishing a mock is the worst failure this stage has**, because it looks like
+success. Departures get proposed, traced to principles, and applied to a drawing
+— producing a decorated mock and a decisions log that reads as though a real
+surface were improved. If the artifact is hand-written HTML, say so plainly and
+send it back.
 
 ## The hard floor
 
@@ -24,7 +36,7 @@ are non-negotiable regardless of visual justification:
 - Screen reader labels and alt text
 - Text scaling at 130% and 200%
 - Drug name / dosage / allergen truncation ban
-- Content/Tertiary, States/Warning, and Coral usage restrictions
+- States/Warning and Coral usage restrictions
 - Form field persistent labels and error association
 - `prefers-reduced-motion` alternative on every animation
 - The six applicable interactive states per element

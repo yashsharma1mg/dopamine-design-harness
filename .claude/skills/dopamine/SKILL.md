@@ -126,8 +126,10 @@ Accessibility is legally binding in India (Article 21, SC Apr 2025).
 Full reference at `reference/accessibility.md`, loaded by Stage 2.
 
 Critical constraints that affect all stages:
-- Three tokens fail WCAG on white: Content/Tertiary (3.29:1),
-  States/Warning (2.79:1), Branding/Coral (3.18:1). Restricted usage.
+- Two tokens fail WCAG on white: States/Warning (2.79:1) and
+  Branding/Coral (3.18:1). Restricted usage. Content/Tertiary (#626a7a)
+  passes at 5.43:1 — verify any contrast claim against `get_tokens`,
+  not memory.
 - Drug names, dosages, allergens: NEVER truncate. Wrap, never ellipsis.
 - Touch: 48dp default, ≥48+12dp for high-stakes (OTP, payment, dosage).
 - Cabinet Grotesk only at ≥24pt.

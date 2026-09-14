@@ -22,9 +22,21 @@ the user wants it, and stop.
 ## Preflight
 
 Before constructing or materially revising the wireframe, load and pass
-`wireframe-preflight.md`. Keep the check lightweight and internal — show it only
-if it fails or the user asks. If an item fails, stop and explain the design
-issue that blocks progress and the smallest next action, not the checklist.
+`wireframe-preflight.md`.
+
+Two different things happen here, and they have opposite visibility rules:
+
+- **The readiness checklist stays internal.** Show it only if it fails or the
+  user asks. On failure, explain the design issue that blocks progress and the
+  smallest next action — not the checklist.
+- **The source-language extraction is an artifact.** It is written into
+  `WIREFRAME.md` as a required section, every time a visual source was supplied.
+  It is never internal, never summarised as "done", and never reduced to a
+  pass/fail line.
+
+That second rule exists because an invisible check is indistinguishable from a
+check that never ran. If the extraction is not in the file, treat it as not
+having happened.
 
 After a material revision, rerun only the checks the change affected.
 
@@ -296,6 +308,33 @@ design-to-code output. Those belong to Stage 2 and Stage 3.
 ## Output structure
 
 ```markdown
+## Source language
+<!-- REQUIRED whenever a screenshot, product screen, or flow was supplied.
+     Omitting this section means the extraction did not happen. Do not write
+     "extraction complete" — write what you actually saw. -->
+
+**Sources inspected:** [file names / frame names, each one actually opened]
+
+| Property | What the source does | Grayscale translation |
+| --- | --- | --- |
+| Surface fills | [flat / gradient — name the direction and both stops] | ... |
+| Accent hue | [the hue carrying status, and where it appears] | ... |
+| Container geometry | [radius character, card vs full-bleed, separator style] | ... |
+| Icon chips | [shape, size, radius, background treatment] | ... |
+| Icon tinting | [uniform, or per-meaning — say which meanings map to which] | ... |
+| Imagery | [photographic / illustrated / glyph, and at what size and radius] | ... |
+| Density and rhythm | [padding, gaps, where the page breathes vs tightens] | ... |
+| Action placement | [where primary and secondary actions sit] | ... |
+| Typographic hierarchy | [what is largest, what carries weight, what recedes] | ... |
+
+**Three markers that could only have come from these sources:**
+1. ...
+2. ...
+3. ...
+
+**Deliberately not carried, and why:** [anything in the source the wireframe
+drops on purpose — a weak pattern, an accessibility problem, brand colour]
+
 ## Solution coverage
 | Agreed item | Screen / surface / state | Status |
 | --- | --- | --- |

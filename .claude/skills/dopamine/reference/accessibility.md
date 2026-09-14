@@ -22,11 +22,17 @@ pass every constraint below before advancing to Stage 3.
 | UI components       | ≥3:1   | Icons (state), input borders                |
 | Decorative/disabled | exempt | But disabled must still be distinguishable  |
 
-### Three tokens that fail WCAG — handle with care
+### Tokens that fail WCAG — handle with care
 
-**Content/Tertiary (#868E9E)** — 3.29:1 on white. Fails body text.
-Use only for icon support or large captions. For information the user
-must read, escalate to Content/Secondary.
+**Content/Tertiary (#626a7a)** — 5.43:1 on white. **Passes AA at every size.**
+Verified against the live token set: `semantic.color.content.tertiary` resolves
+to `base.color.cool-neutral.50` = `#626a7a`.
+
+> Earlier revisions of this file recorded Content/Tertiary as `#868E9E` at
+> 3.29:1 and restricted it from body text. That hex is `cool-neutral.60` — a
+> different token that content.tertiary does not point at. The restriction was
+> wrong and is lifted. `cool-neutral.60` itself is still 3.29:1, so if you
+> reference that primitive directly, the old caution applies to it.
 
 **States/Warning (#BF9514)** — 2.79:1 on white. Fails at every size.
 Never put yellow text on white. Use yellow as the background with
@@ -215,7 +221,6 @@ Aim for Grade 7–8 reading level on all consumer-facing copy.
 
 ### Do not
 
-- Use Content/Tertiary for body text (fails AA on white)
 - Put States/Warning yellow text on white (fails every size)
 - Use Coral as body-text colour at sub-18pt
 - Use placeholder text as the only label

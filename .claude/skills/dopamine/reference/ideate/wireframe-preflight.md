@@ -5,6 +5,11 @@ Use this checklist immediately before creating or materially revising a wirefram
 
 Do not create a manifest, ledger, JSON file, task transcript, or separate user-facing artifact. Do not show the checklist when it passes unless the user asks. If an item fails, explain only the design issue that blocks progress and the smallest next action needed.
 
+**One exception, and it is absolute.** The source-language extraction is not part
+of this internal checklist. It is a required section of `WIREFRAME.md`. Confirming
+it here does not satisfy it — the written section does. An extraction that exists
+only as a passed check has not happened.
+
 ## Required checks
 
 Confirm all applicable statements:
@@ -22,9 +27,11 @@ Confirm all applicable statements:
 
 When screenshots, product screens, or flows were supplied, also confirm:
 
-- Every relevant source was opened and visually inspected.
-- The source-language extraction identifies layout rhythm, density, navigation, proportions and shapes, grouping, hierarchy, action placement, icon treatment, and interaction patterns.
-- At least three source-specific visual markers are recorded.
+- Every relevant source was opened and visually inspected. Not inferred from a filename, a prompt description, or a previous summary.
+- **The `## Source language` section is written into `WIREFRAME.md`**, filled with observations rather than the word "complete".
+- It names surface fills (flat or gradient, with both stops), the accent hue and what it signals, container geometry, icon-chip shape and size, whether icon tinting is uniform or per-meaning, imagery type and treatment, density, action placement, and typographic hierarchy.
+- At least three markers are recorded that could only have come from these sources.
+- Anything deliberately not carried forward is named, with the reason.
 - The wireframe translates that language into black, white, and neutral greys.
 - The proposal resembles the source product family without claiming pixel-perfect or design-system accuracy.
 

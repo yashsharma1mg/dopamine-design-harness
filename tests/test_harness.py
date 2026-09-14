@@ -336,6 +336,71 @@ def test_allowed_tools_cover_protocol():
 # 7. Stage completeness
 # --------------------------------------------------------------------------
 
+def test_source_extraction_is_an_artifact_not_a_check():
+    """The extraction must land in WIREFRAME.md, not pass silently.
+
+    A real run produced a wireframe with no source-language record at all: the
+    preflight said "keep the check internal, show it only if it fails", so an
+    extraction that never happened was indistinguishable from one that passed.
+    Everything downstream then invented a visual language.
+    """
+    wf = C[REF / "ideate" / "wireframe.md"]
+    pf = C[REF / "ideate" / "wireframe-preflight.md"]
+    check("wireframe output requires a Source language section",
+          "## Source language" in wf,
+          "the extraction must be a required artifact section")
+    check("extraction is explicitly not internal",
+          "is an artifact" in wf.lower() or "never internal" in wf.lower())
+    check("preflight defers to the written section",
+          "WIREFRAME.md" in pf and "has not happened" in pf.lower())
+    # the properties the failed run actually dropped
+    for prop in ("gradient", "hue", "tint", "imagery", "geometry"):
+        check(f"extraction captures {prop}", prop in wf.lower())
+
+
+def test_compose_restores_the_source_language():
+    """Recording the source is useless unless compose consumes it."""
+    compose = C[REF / "compose.md"]
+    check("compose reads the Source language section", "## Source language" in compose)
+    check("compose has a restore phase", "Restore the source language" in compose)
+    check("compose forbids flattening a gradient", "flattened to a flat fill" in compose)
+    check("compose verifies source fidelity", "Source fidelity" in compose)
+
+
+def test_compose_forbids_hand_rolled_components():
+    """A hand-written CSS class emulating a component is not a composed surface."""
+    compose = C[REF / "compose.md"]
+    check("compose bans emulating components in CSS",
+          "Never hand-write CSS that emulates a component" in compose)
+    check("compose names the real deliverable format",
+          "The deliverable is TSX" in compose)
+    check("compose defines the mock label", "MOCK" in compose)
+    polish = C[REF / "polish.md"]
+    check("polish refuses to polish a mock", "MOCK" in polish and "nothing here" in polish.lower())
+
+
+def test_font_weights_match_the_real_set():
+    """The DS has no semibold. compose.md used to claim one."""
+    for p, t in C.items():
+        check(f"no invented semibold weight in {p.name}",
+              "semibold" not in t.lower() or "no semibold" in t.lower(),
+              "DS weights are 300/400/500/700/800 — there is no 600")
+
+
+def test_content_tertiary_contrast_is_correct():
+    """Verified against the live token set: content.tertiary is cool-neutral.50.
+
+    accessibility.md previously recorded #868E9E (cool-neutral.60) at 3.29:1 and
+    restricted it from body text. Wrong token, wrong restriction.
+    """
+    acc = C[REF / "accessibility.md"]
+    check("content.tertiary uses the real hex", "#626a7a" in acc)
+    check("content.tertiary restriction lifted",
+          "5.43:1" in acc and "Passes AA" in acc)
+    stale = [p.name for p, t in C.items() if "Content/Tertiary (3.29" in t or "Content/Tertiary (#868E9E)" in t]
+    check("no stale Content/Tertiary claim", not stale, ", ".join(stale))
+
+
 def test_stage_two_is_implemented():
     compose = C[REF / "compose.md"]
     # Match stub markers precisely — "placeholder" appears legitimately in prose

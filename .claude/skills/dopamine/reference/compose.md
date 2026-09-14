@@ -106,7 +106,36 @@ carry a pixel value forward from the wireframe.
 
 Never hardcode a hex, a px spacing, or a radius that a token expresses.
 
+### Phase 2b — Restore the source language
+
+Stage 1's wireframe was grayscale **on purpose**. Its `## Source language`
+section in `WIREFRAME.md` is the record of everything the greyscale dropped, and
+Phase 2b is where it comes back. Read that section before composing. If it is
+missing, the extraction never happened — stop and send the surface back to
+Stage 1 rather than inventing a visual language.
+
+Walk the extraction row by row and restore each property with real tokens:
+
+| Recorded | Restore as |
+| --- | --- |
+| Gradient surface fills | The real gradient, both stops as tokens. A gradient flattened to a flat fill is a defect, not a simplification. |
+| Accent hue and what it signals | The semantic role that carries that meaning. A status blue does not become grey, and it does not become a different hue. |
+| Icon-chip shape and size | The recorded geometry. A rounded square does not become a circle. |
+| Per-meaning icon tinting | The per-meaning tints. Collapsing them to one uniform grey destroys the signal the source was carrying. |
+| Imagery | Real images where the source had real images. Substituting a glyph for a photograph changes what the row communicates. |
+| Density, action placement, hierarchy | The recorded rhythm, not a default. |
+
+The test: **put the composed surface next to the source screenshot.** If a
+reviewer can tell which is which by anything other than the new intervention,
+the restoration is incomplete. Say so rather than shipping it.
+
 ### Phase 3 — Compose
+
+**Never hand-write CSS that emulates a component.** A `.btn-primary-l` class
+with a comment reading `/* Button type=Fill size=Large */` is not a Button — it
+is a drawing of one that will drift from the real component the moment either
+changes. This is the single most common way a composed surface turns out to be a
+mock. If a component exists, use it. If it does not, see Phase 1.
 
 - Import from the barrel: `import { X } from "@dopamine2.0/ui"`. Import
   `@dopamine2.0/ui/styles.css` once, at the app root.
@@ -127,6 +156,32 @@ Never hardcode a hex, a px spacing, or a radius that a token expresses.
 - Build every state the coverage table names. A state marked *deferred with
   reason* in Stage 1 stays deferred; a state marked *mapped* gets built.
 
+### What Stage 2 delivers
+
+`@dopamine2.0/ui` is a React package (ESM, React 18+) whose stylesheet carries
+the tokens, fonts, and component styles. That fact decides the format.
+
+**The deliverable is TSX** — real components, imported from the barrel, props
+matching the contracts from `get_component_docs`. This is the surface. It is
+what an engineer picks up and what Stage 3 polishes.
+
+**A review artifact is optional and is built one of two ways:**
+
+1. `preview_component` / `preview_pattern` return a self-contained HTML render
+   of the *real* component, every variant included. Assemble review artifacts
+   from these. The markup and styling are the system's, not yours.
+2. Render the TSX with a bundler that resolves the `exports` map.
+
+**A standalone hand-written HTML file is not a composed surface.** It cannot
+import the package, so every "component" in it is an approximation. If one is
+produced anyway — as a quick visual for a stakeholder — it must be labelled a
+**mock** in its title and in the surface report, and it may not claim component
+or token fidelity. Never call it composed, and never let Stage 3 polish it.
+
+The failure this prevents: a hand-rolled HTML file that looks finished, passes a
+token-value check because the hex values were copied correctly, and is nowhere
+near the design system because not one real component is in it.
+
 ### Phase 4 — Verify
 
 Run all four. Report failures; do not quietly fix them by bending a rule.
@@ -135,13 +190,25 @@ Run all four. Report failures; do not quietly fix them by bending a rule.
 still carries its Stage 1 deferral reason. Nothing dropped silently.
 
 **2 · Tokens.** No hardcoded hex, px spacing, or radius that a token expresses.
-No component referencing a base token directly.
+No component referencing a base token directly. No font weight outside the real
+set — light 300, regular 400, medium 500, bold 700, extrabold 800. **There is no
+semibold**; a `600` in the output is invented.
+
+**2b · Source fidelity.** Every row of the `## Source language` extraction is
+restored: gradients are gradients, the accent hue is the source's hue, chip
+geometry matches, per-meaning tints survive, imagery is imagery. Side-by-side
+with the source screenshot, nothing but the intervention should read as
+different. List anything deliberately not restored, with the reason.
+
+**2c · Real components.** Every interactive element is a `@dopamine2.0/ui`
+import. Zero hand-written CSS classes emulating a component. If the artifact is
+a mock, it says so in its title and here.
 
 **3 · Accessibility — the full `accessibility.md` pass.** This is the gate to
 Stage 3, and the whole list runs:
 
-- Contrast: 4.5:1 body, 3:1 large, 3:1 UI. The three restricted tokens
-  (Content/Tertiary 3.29:1, States/Warning 2.79:1, Branding/Coral 3.18:1) fail
+- Contrast: 4.5:1 body, 3:1 large, 3:1 UI. The two restricted tokens
+  (States/Warning 2.79:1, Branding/Coral 3.18:1) fail
   on white — honour their restricted-use rules.
 - Touch targets: 48dp default, 24×24 absolute floor, ≥48+12dp for high-stakes
   (OTP, payment, dosage).
@@ -198,10 +265,15 @@ Stopgap only. Resolve from `get_tokens` whenever the MCP is reachable.
 
 | Role | Fallback | Notes |
 | --- | --- | --- |
-| Page title | 20–22px, semibold | Cabinet Grotesk only at ≥24pt; below that, Figtree |
-| Heading / Title | 16–18px, medium or semibold | Figtree |
-| Body | 14–16px, regular | Figtree. 16px bold is the iOS input floor |
-| Sub text / caption | 12px, regular | Never below the accessibility size floors |
+| Page title | `title-22` 22px, bold 700 | Cabinet Grotesk only at ≥24pt; below that, Figtree |
+| Heading | `heading-18` 18px, medium 500 or bold 700 | Figtree |
+| Title | `body-16` 16px, medium 500 | Figtree |
+| Body | `body-14` 14px, regular 400 | Figtree. 16px bold is the iOS input floor |
+| Sub text / caption | `body-12` 12px, regular 400 | Never below the accessibility size floors |
+| Tag | `tag-11` 11px, bold 700 | Tags and badges only, never sustained reading |
+
+Weights are **light 300, regular 400, medium 500, bold 700, extrabold 800**.
+There is no semibold. A `600` anywhere in the output is invented.
 
 A fallback value is never a token. A hardcoded size that survives into the
 committed surface is a defect.
@@ -231,6 +303,14 @@ Deliver the surface plus a short report:
 
 ## States built
 [from the coverage table: built / still deferred with reason]
+
+## Artifact format
+[TSX composed from real components | HTML assembled from preview_component |
+**MOCK** — hand-written, no component fidelity, not for polish]
+
+## Source fidelity
+[each row of the Stage 1 extraction: restored | deliberately not restored + why]
+[side-by-side with the source: what still reads as different, and why]
 
 ## Accessibility pass
 [each hard-floor item: pass, or the specific failure]
