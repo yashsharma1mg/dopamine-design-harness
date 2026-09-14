@@ -367,6 +367,27 @@ def test_compose_restores_the_source_language():
     check("compose verifies source fidelity", "Source fidelity" in compose)
 
 
+def test_compose_establishes_a_host_project():
+    """"The deliverable is TSX" is empty without somewhere to put it.
+
+    Phase 0 settles the host project before any component is resolved, and the
+    no-project case is surfaced to the user rather than silently downgraded to
+    a hand-written HTML file.
+    """
+    compose = C[REF / "compose.md"]
+    check("compose has a Phase 0 for the host project",
+          "Phase 0 — Establish where the surface is being built" in compose)
+    check("Phase 0 is in the entry gate", "see Phase 0" in compose)
+    check("compose handles the no-host-project case",
+          "If there is no host project" in compose)
+    check("compose does not silently downgrade",
+          "Do **not** default to option 3 silently" in compose)
+    check("compose writes AGENTS.md from get_agent_rules",
+          "get_agent_rules" in compose and "AGENTS.md" in compose)
+    check("compose notes the package is ESM only", "ESM only" in compose)
+    check("surface report records the host project", "## Host project" in compose)
+
+
 def test_compose_forbids_hand_rolled_components():
     """A hand-written CSS class emulating a component is not a composed surface."""
     compose = C[REF / "compose.md"]

@@ -11,8 +11,11 @@ Dopamine 2.0 design system. The skill lives at `.claude/skills/dopamine/`.
    interactive wireframe. No Dopamine components, no tokens, no brand colour.
    Outputs: `PRODUCT.md`, `WIREFRAME.md`, `wireframes/<surface>.html`.
 2. **Compose** (`/dopamine compose`) — Wireframes → real components.
-   Dopamine MCP required (`list_components` must answer). Output: composed
-   surface code with tokens resolved and the full accessibility pass clean.
+   Requires the Dopamine MCP (`list_components` must answer) **and** a host
+   React project to compose into — `@dopamine2.0/ui` is ESM, React 18+, and
+   ships as a private tarball. Output: TSX built from real components, tokens
+   resolved, the Stage 1 source language restored, and the full accessibility
+   pass clean. A hand-written HTML file is a **MOCK**, not a composed surface.
 3. **Polish** (`/dopamine polish`) — Propose departures → user approves.
    Output: polished surface with documented exceptions.
 

@@ -13,6 +13,9 @@ Requires all of:
   table and component candidates. Without it, send the user back to `ideate`.
 - The Dopamine MCP reachable. Verify with `list_components` before anything
   else. If it fails, see **Degraded mode** below — do not silently guess.
+- A decision about **where the surface is being built** — see Phase 0. Without
+  a host project, TSX has nowhere to go, and that must be settled with the user
+  rather than worked around.
 
 ## Mandatory references
 
@@ -46,6 +49,56 @@ once per component. A prop you remember is a prop you are inventing.
 ---
 
 ## Protocol
+
+### Phase 0 — Establish where the surface is being built
+
+"The deliverable is TSX" is meaningless without a project to put it in. Settle
+this **before** resolving a single component, because the answer decides what
+Stage 2 can honestly produce.
+
+Check, in order:
+
+1. **Is there a host project?** A `package.json`, React `>=18`, and a bundler
+   that resolves the `exports` map — Vite, Next.js, webpack 5, or esbuild.
+   The package is **ESM only**; CommonJS `require()` will not work.
+2. **Is `@dopamine2.0/ui` installed?** Look for it in `package.json` and in
+   `node_modules`.
+3. **If not, install it.** The package is private and not on the public npm
+   registry — it ships as a tarball from the design-system repo:
+
+   ```bash
+   npm install /path/to/dopamine2.0-ui-<version>.tgz
+   npm install react react-dom     # peers, if absent
+   ```
+
+   Confirm the tarball's location with the user rather than guessing a path.
+   `get_general_docs "install"` carries the current instructions.
+4. **Wire the stylesheet once, at the app root:**
+   `import "@dopamine2.0/ui/styles.css";` — it carries the tokens, the bundled
+   Figtree font, and every component style. Icons are inlined as data-URIs;
+   there are no external assets to host.
+5. **Drop the agent rules into the host project.** Call `get_agent_rules` and
+   write the result to `AGENTS.md` at the project root. Any other agent that
+   later touches this repo then builds against the same contract instead of
+   guessing component APIs.
+
+#### If there is no host project
+
+Say so plainly, before composing anything. This is the honest outcome, not a
+failure:
+
+> There's no React project here to compose into. Stage 2 produces TSX that
+> imports `@dopamine2.0/ui`, and that needs somewhere to live.
+>
+> Three ways forward:
+> 1. Point me at the app this surface belongs in.
+> 2. Let me scaffold a minimal Vite + React 18 project and install the package.
+> 3. I build an HTML review artifact from `preview_component` instead — real
+>    component markup, viewable, but not wired into a product.
+
+Wait for the answer. Do **not** default to option 3 silently, and do not
+hand-write an HTML file that looks like option 3 but contains no real component
+markup — that is the mock failure this protocol exists to prevent.
 
 ### Phase 1 — Resolve the candidates
 
@@ -303,6 +356,10 @@ Deliver the surface plus a short report:
 
 ## States built
 [from the coverage table: built / still deferred with reason]
+
+## Host project
+[path, bundler, React version | none — and which option the user chose]
+[AGENTS.md written from get_agent_rules: yes / no]
 
 ## Artifact format
 [TSX composed from real components | HTML assembled from preview_component |
