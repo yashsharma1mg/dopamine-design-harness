@@ -4,6 +4,11 @@ Reachable only from a **Stop for research first** decision at branch point 1,
 and only when the user asks for research help. Guide the research; never
 invent findings or present assumptions as participant feedback.
 
+**Keep it tight.** Research output bloats faster than anything else in this
+stage. Use only the headings that carry content, bullets rather than paragraphs,
+and state a gap in a line rather than arguing it. Three filled headings beat six
+padded ones. See `../effort-and-speed.md`.
+
 ---
 
 

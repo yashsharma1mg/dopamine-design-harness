@@ -56,6 +56,11 @@ belongs to product.
 
 ## Response format
 
+**Keep it short.** `../effort-and-speed.md` governs response length as well as
+work volume — lead with the answer, say things once, cut process narration, and
+use tables for anything with repeating structure. A visible decision is one line
+plus its reason, not a section.
+
 - When missing information blocks the next design step, use the exact heading: **Answer me few questions**, and ask only the smallest set that could change the framing, direction, flow, hierarchy, safety, or branch choice. Do not bury blocking questions inside paragraphs.
 - When ready to move into a meaningful next step that needs approval, use the exact heading: **Shall I proceed with**, followed by a numbered list. Use it for direction, flows, research guides, and wireframes — not for trivial transitions.
 - On the first substantive response to a new problem, end by naming the most useful next step and, where a real choice exists, what to pick.

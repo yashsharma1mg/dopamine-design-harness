@@ -14,6 +14,42 @@ Use the smallest amount of work needed to make the current design decision well.
 - Stop when additional work is unlikely to change the recommendation.
 - Keep successful internal checks invisible. Explain only blockers, material assumptions, and meaningful trade-offs.
 
+## Response length
+
+The brake applies to what you *write*, not only what you do. A short answer that
+names the decision beats a long one that documents the process.
+
+- **Lead with the answer.** The decision, the recommendation, or the question —
+  first line. Never open with a recap of what was asked.
+- **Say a thing once.** If the branch decision is in the heading, it does not
+  need restating in the paragraph under it.
+- **Cut the process narration.** "I loaded X, then considered Y, then
+  concluded Z" is Z with noise in front.
+- **A visible decision is one line plus its reason.** Both branch points, the
+  competitive-research call, and the principle check are *visible*, not
+  *expansive*. `Research not needed — the recordings locate the breakdown` is a
+  complete, compliant answer.
+- **Tables over prose** for anything with repeating structure. Coverage,
+  directions, understanding maps, token resolution.
+- **No filler headings.** A heading with two lines under it was not worth the
+  heading.
+- **Do not pad to look rigorous.** Length is not thoroughness. The workflow
+  control record is a record, not an essay.
+
+If a section has run past a phone screen, it is doing two jobs — split it or
+cut it.
+
+### Research mode
+
+This is where responses bloat worst, because the structure invites filling every
+heading. Use only the headings that carry content:
+
+- **What we know** / **What is missing** / **Why research is needed** /
+  **What we need to learn** / **Suggested approach** / **What I can do next**
+
+Drop any that would be empty or obvious. Three filled headings beat six padded
+ones. Bullets, not paragraphs — a research gap is a line, not a case.
+
 ## Research limit
 
 - Skip competitive research by default when the problem is directly observable and established UX principles support the direction.

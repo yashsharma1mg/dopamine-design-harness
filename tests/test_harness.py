@@ -250,6 +250,18 @@ def test_competitive_research_default_is_single_valued():
           "default to **Run**" not in router)
 
 
+def test_brake_governs_response_length():
+    """The brake used to cap work volume only, so responses stayed long."""
+    eas = C[REF / "effort-and-speed.md"]
+    check("effort brake covers response length", "## Response length" in eas)
+    check("brake names research mode as the worst offender", "### Research mode" in eas)
+    check("brake says a visible decision is one line",
+          "one line plus its reason" in eas)
+    for f in ("ideate.md", "ideate/research.md"):
+        check(f"{f} points at the length rules",
+              "effort-and-speed.md" in C[REF / f])
+
+
 def test_effort_brake_is_loaded():
     router = C[REF / "ideate.md"]
     check("effort-and-speed always loaded", "effort-and-speed.md" in router)
